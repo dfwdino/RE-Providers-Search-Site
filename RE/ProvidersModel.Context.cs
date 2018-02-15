@@ -25,12 +25,12 @@ namespace RE
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Insurance> Insurances { get; set; }
         public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<ListOfInsuranceCompany> ListOfInsuranceCompanys { get; set; }
         public virtual DbSet<ListOfService> ListOfServices { get; set; }
+        public virtual DbSet<State> States { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

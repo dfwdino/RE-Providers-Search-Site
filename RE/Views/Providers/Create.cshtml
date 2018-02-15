@@ -1,0 +1,248 @@
+﻿@model RE.Provider
+
+@{
+    ViewBag.Title = "Create";
+    int NumberOfInsuranceCompanys = 0;
+    int NumberOfServices = 0; 
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Provider</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StateID, "StateID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("StateID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.StateID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Zip, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SlidingScale, htmlAttributes: new { @class = "control -label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.DropDownList("SlidingScale", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SlidingScale, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DiscountCashPay, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.DropDownList("DiscountCashPay", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DiscountCashPay, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="ListArea">
+        <div id="InsureancePlaceHolder">
+
+        </div>
+        <div class="row">
+            <div class="col-sm-1" style="margin-left:10px;margin-bottom:5px;">
+                <input type="button" class="btn btn-default" id="addinsureance" name="addinsureance" value="New Insureance" />
+            </div>
+
+        </div>
+
+        <div class="ListArea">
+            <div id="ServicesPlaceHolder">
+
+            </div>
+            <div class="row">
+                <div class="col-sm-1" style="margin-left:10px;margin-bottom:5px;">
+                    <input type="button" class="btn btn-default" id="addservices" name="addservices" value="New Services" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</div>
+}
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+<div id="TempInsureancePlaceHolder"  style="display:none;">
+    <div id="TempInsureance">
+        <div class="row">
+            <div class="col-lg-12">
+                @foreach (var item in ViewBag.ListOfInsuranceCompanys)
+        {
+            <label for="Insurances[@item.ID][@NumberOfInsuranceCompanys]">
+                <input style="margin-left:5px" type="checkbox" name="Insurances[@NumberOfInsuranceCompanys].SelectedInsurance"
+                       id="Insurances[@item.ID][@NumberOfInsuranceCompanys]" value="@item.ID" />
+                @item.Name
+            </label>
+}
+            </div>
+            <div class="row">
+                <div class="col-lg-2 InsuranceDelete" id="remove">remove Insurance</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="TempServicesPlaceHolder"  style="display:none;">
+    <div id="TempServices">
+        <div class="row">
+            <div class="col-lg-12">
+                @foreach (var item in ViewBag.ListOfServices)
+            {
+                <label for="Services[@item.ID][@NumberOfServices]">
+                    <input style="margin-left:5px" type="checkbox" name="Services[@NumberOfServices].SelectedService"
+                           id="Services[@item.ID][@NumberOfServices]" value="@item.ID" />
+                    @item.Name
+                </label>
+        }
+            </div>
+            <div class="row">
+                <div class="col-lg-2 ServicesDelete" id="remove">remove Services</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var NumberOfInsuranceCompanys = 0;
+    var NumberOfServices = 0;
+    
+
+    $('#InsureancePlaceHolder').on('click', '.InsuranceDelete', function () {
+      
+        document.getElementById('InsureancePlaceHolder').removeChild(document.getElementById("TempInsureance_" + this.id.split('_')[1]));
+    });
+
+    $('#ServicesPlaceHolder').on('click', '.ServicesDelete', function () {
+
+        document.getElementById('ServicesPlaceHolder').removeChild(document.getElementById("TempServices_" + this.id.split('_')[1]));
+    });
+
+    $("#addinsureance").click(function () {
+        addInsuranceCompanys();
+    });
+
+    $("#addservices").click(function () {
+        addServices();
+    });
+
+    
+
+
+
+    $(function () {
+        addInsuranceCompanys();
+        addServices();
+   });
+
+
+    function addInsuranceCompanys() {
+
+        var outline = "";
+        if (NumberOfInsuranceCompanys > 0) {
+            outline = "<hr>"
+        }
+        outline += $('#TempInsureancePlaceHolder').html();
+        outline = outline.replace(/\[0]/g, "[" + NumberOfInsuranceCompanys + "]")
+            .replace(/\TempInsureance/g, "TempInsureance_" + NumberOfInsuranceCompanys)
+            .replace("remove", "remove_" + NumberOfInsuranceCompanys)
+
+        $(outline).appendTo("#InsureancePlaceHolder");
+
+        NumberOfInsuranceCompanys++;
+
+    }
+
+    function addServices() {
+        console.log('lik')
+        var outline = "";
+        if (NumberOfServices > 0) {
+            outline = "<hr>"
+        }
+        outline += $('#TempServicesPlaceHolder').html();
+        outline = outline.replace(/\[0]/g, "[" + NumberOfServices + "]")
+            .replace(/\TempServices/g, "TempServices_" + NumberOfServices)
+            .replace("remove", "remove_" + NumberOfServices)
+
+        $(outline).appendTo("#ServicesPlaceHolder");
+
+        NumberOfServices++;
+
+    }
+
+
+</script>

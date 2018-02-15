@@ -5,18 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="016a1a259b244321bfb2af0ed1f7745a" Name="Diagram1">
-        <EntityTypeShape EntityType="REModel.Address" Width="1.5" PointX="6.375" PointY="3.875" />
-        <EntityTypeShape EntityType="REModel.Insurance" Width="1.5" PointX="4.25" PointY="0.625" />
-        <EntityTypeShape EntityType="REModel.Provider" Width="1.5" PointX="6.25" PointY="0.5" />
-        <EntityTypeShape EntityType="REModel.Service" Width="1.5" PointX="8.25" PointY="0.75" />
-        <EntityTypeShape EntityType="REModel.ListOfInsuranceCompany" Width="1.5" PointX="2.375" PointY="0.75" />
-        <EntityTypeShape EntityType="REModel.ListOfService" Width="1.5" PointX="8.25" PointY="3" />
-        <AssociationConnector Association="REModel.FK_Addresses_Providers" />
+        <EntityTypeShape EntityType="REModel.Insurance" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="REModel.Provider" Width="1.5" PointX="3" PointY="2.875" />
+        <EntityTypeShape EntityType="REModel.Service" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="REModel.ListOfInsuranceCompany" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="REModel.ListOfService" Width="1.5" PointX="3" PointY="11" />
+        <EntityTypeShape EntityType="REModel.State" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="REModel.User" Width="1.5" PointX="5.75" PointY="7" />
         <AssociationConnector Association="REModel.FK_Insurances_Insurances1" />
         <AssociationConnector Association="REModel.FK_Insurances_Providers" />
+        <AssociationConnector Association="REModel.FK_Providers_States" />
         <AssociationConnector Association="REModel.FK_ProviderServices_Provider" />
         <AssociationConnector Association="REModel.FK_ProviderServices_Services" />
-        <EntityTypeShape EntityType="REModel.User" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

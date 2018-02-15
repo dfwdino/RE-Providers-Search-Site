@@ -18,7 +18,8 @@ namespace RE
         public int ProviderID { get; set; }
         public int ServiceID { get; set; }
         public int bit { get; set; }
-    
+        public IList<int> SelectedService { get; set; }
+
         public virtual Provider Provider { get; set; }
         public virtual ListOfService ListOfService { get; set; }
     }

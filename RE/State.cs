@@ -12,16 +12,19 @@ namespace RE
     using System;
     using System.Collections.Generic;
     
-    public partial class Address
+    public partial class State
     {
-        public int ID { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public Nullable<double> Zip { get; set; }
-        public int ProviderID { get; set; }
-        public bool Hide { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public State()
+        {
+            this.Providers = new HashSet<Provider>();
+        }
     
-        public virtual Provider Provider { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Abbrev { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Provider> Providers { get; set; }
     }
 }
