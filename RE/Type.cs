@@ -12,15 +12,16 @@ namespace RE
     using System;
     using System.Collections.Generic;
     
-    public partial class Insurance
+    public partial class Type
     {
         public int ID { get; set; }
-        public int InsureanceID { get; set; }
+        public int TypeID { get; set; }
         public int ProviderID { get; set; }
         public bool Hide { get; set; }
-        public List<int> SelectedInsurance { get; set; }
+        public List<int> SelectedType { get; set; }
 
-        public virtual ListOfInsuranceCompany ListOfInsuranceCompany { get; set; }
+
         public virtual Provider Provider { get; set; }
+        public virtual ListOfType ListOfType { get; set; }
     }
 }

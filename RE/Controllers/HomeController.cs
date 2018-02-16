@@ -8,10 +8,14 @@ namespace RE.Controllers
 {
     public class HomeController : Controller
     {
+        private REEntities db = new REEntities();
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            List<Provider> providers = db.Providers.Where(m => m.Hide == false).ToList();
+
+
+            return View(providers);
         }
     }
 }

@@ -81,64 +81,85 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.SlidingScale, htmlAttributes: new { @class = "control -label col-md-2" })
+        @Html.Label("Sliding Scale", htmlAttributes: new { @class = "control-label col-md-2" })
+
         <div class="col-md-10">
-            <div class="checkbox">
-                @Html.DropDownList("SlidingScale", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SlidingScale, "", new { @class = "text-danger" })
-            </div>
+            @Html.DropDownList("SlidingScale", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SlidingScale, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.DiscountCashPay, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Discount Cash Pay", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <div class="checkbox">
-                @Html.DropDownList("DiscountCashPay", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.DiscountCashPay, "", new { @class = "text-danger" })
-            </div>
+            @Html.DropDownList("DiscountCashPay", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DiscountCashPay, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="ListArea">
-        <div id="InsureancePlaceHolder">
-
+    <div class="form-group">
+        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Notes, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
         </div>
-        <div class="row">
-            <div class="col-sm-1" style="margin-left:10px;margin-bottom:5px;">
-                <input type="button" class="btn btn-default" id="addinsureance" name="addinsureance" value="New Insureance" />
-            </div>
+    </div>
 
-        </div>
 
-        <div class="ListArea">
-            <div id="ServicesPlaceHolder">
 
-            </div>
+
+    <div id="InsureancePlaceHolder" class="PlaceHolder">
+        <h3>Insurance</h3>
+        <hr />
+
+    </div>
+
+    <div id="ServicesPlaceHolder" class="PlaceHolder">
+        <h3>Services</h3>
+        <hr />
+    </div>
+
+    <div id="TypesPlaceHolder" class="PlaceHolder">
+        <h3>Types</h3>
+        <hr />
+
+        <div id="TempServices">
             <div class="row">
-                <div class="col-sm-1" style="margin-left:10px;margin-bottom:5px;">
-                    <input type="button" class="btn btn-default" id="addservices" name="addservices" value="New Services" />
+                <div class="col-lg-12">
+                    @foreach (var item in ViewBag.ListOfTypes)
+                {
+                    <label for="Types[@item.ID][0]">
+                        <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
+                               id="Types[@item.ID][0]" value="@item.ID" />
+                        @item.Type
+                    </label>
+            }
                 </div>
-
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+
+
+    </div>
+
+
+    <br />
+
+
+    <div class="form-group">
+        <div class="col-md-offset-1 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
 </div>
+
 }
-        <div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>
 
 <div id="TempInsureancePlaceHolder"  style="display:none;">
     <div id="TempInsureance">
         <div class="row">
             <div class="col-lg-12">
+
                 @foreach (var item in ViewBag.ListOfInsuranceCompanys)
         {
             <label for="Insurances[@item.ID][@NumberOfInsuranceCompanys]">
@@ -148,9 +169,9 @@
             </label>
 }
             </div>
-            <div class="row">
+            @*<div class="row" >
                 <div class="col-lg-2 InsuranceDelete" id="remove">remove Insurance</div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -168,14 +189,12 @@
                 </label>
         }
             </div>
-            <div class="row">
+            @*<div class="row">
                 <div class="col-lg-2 ServicesDelete" id="remove">remove Services</div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
-
-
 
 <script>
     var NumberOfInsuranceCompanys = 0;
@@ -246,3 +265,12 @@
 
 
 </script>
+
+
+<style>
+   
+    .PlaceHolder {
+        padding: 15px 0 15px 10px
+    }
+
+</style>

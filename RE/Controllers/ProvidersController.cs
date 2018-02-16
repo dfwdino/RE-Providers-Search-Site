@@ -42,8 +42,9 @@ namespace RE.Controllers
             ViewBag.StateID = new SelectList(db.States, "ID", "Name");
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).ToList();
             ViewBag.DiscountCashPay = new List<SelectListItem> {
-                                new SelectListItem { Text = "Select", Value = "" },
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
                                 new SelectListItem { Text = "Unknown", Value = "" },
                                 new SelectListItem { Text = "Yes", Value = true.ToString() },
                                 new SelectListItem { Text = "No", Value = false.ToString() }};
@@ -59,9 +60,73 @@ namespace RE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Provider provider)
         {
+
             if (ModelState.IsValid)
             {
-                db.Providers.Add(provider);
+
+                Provider tempprovider = new Provider();
+                tempprovider.Services = new List<Service>();
+                tempprovider.Insurances = new List<Insurance>();
+                
+
+                tempprovider.Name = provider.Name;
+                tempprovider.Phone = provider.Phone;
+
+                tempprovider.SlidingScale = provider.SlidingScale;
+                tempprovider.DiscountCashPay = provider.DiscountCashPay;
+                tempprovider.StateID = provider.StateID;
+                tempprovider.Street = provider.Street;
+                tempprovider.Zip = provider.Zip;
+                tempprovider.Website = provider.Website;
+                tempprovider.City = provider.City;
+                tempprovider.Email = provider.Email;
+
+                foreach (var service in provider.Services)
+                {
+                    foreach (var selectedservice in service.SelectedService)
+                    {
+                        Service newservice = new Service();
+
+                        //newservice.ProviderID = tempprovider.ID;
+                        newservice.ServiceID = selectedservice;
+
+                        tempprovider.Services.Add(newservice);
+
+                    }
+                }
+
+                foreach (var insurances in provider.Insurances)
+                {
+                    foreach (var selectedinsurances in insurances.SelectedInsurance)
+                    {
+                        Insurance newinsurances = new Insurance();
+
+                        newinsurances.InsureanceID = selectedinsurances;
+                        newinsurances.ProviderID = tempprovider.ID;
+                        
+
+                        tempprovider.Insurances.Add(newinsurances);
+
+                    }
+                }
+
+                foreach (var type in provider.Types)
+                {
+                    foreach (var selectedtype in type.SelectedType)
+                    {
+                        Type newtype = new Type();
+
+                        newtype.TypeID = selectedtype;
+                        newtype.ProviderID = tempprovider.ID;
+                        
+                        tempprovider.Types.Add(newtype);
+
+                    }
+                }
+
+
+
+                db.Providers.Add(tempprovider);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

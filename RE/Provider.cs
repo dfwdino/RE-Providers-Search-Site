@@ -17,8 +17,9 @@ namespace RE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Provider()
         {
-           
-            
+            this.Insurances = new HashSet<Insurance>();
+            this.Services = new HashSet<Service>();
+            this.Types = new HashSet<Type>();
         }
     
         public int ID { get; set; }
@@ -33,13 +34,16 @@ namespace RE
         public Nullable<bool> SlidingScale { get; set; }
         public Nullable<bool> DiscountCashPay { get; set; }
         public bool Hide { get; set; }
-      
-
-
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> ModefiyDate { get; set; }
+        public string Notes { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public IList<Insurance> Insurances { get; set; }
+        public virtual ICollection<Insurance> Insurances { get; set; }
         public virtual State State { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual IList<Service> Services { get; set; }
+        public virtual ICollection<Service> Services { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Type> Types { get; set; }
     }
 }

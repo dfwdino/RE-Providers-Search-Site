@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListOfInsuranceCompaniesController.cs" />
     <Compile Include="Controllers\ListOfServicesController.cs" />
+    <Compile Include="Controllers\ListOfTypesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -149,6 +150,10 @@
     <Compile Include="ListOfService.cs">
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ListOfType.cs">
+      <DependentUpon>ProvidersModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProviderCreateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider.cs">
       <DependentUpon>ProvidersModel.tt</DependentUpon>
@@ -172,6 +177,9 @@
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
     <Compile Include="State.cs">
+      <DependentUpon>ProvidersModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Type.cs">
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
@@ -213,6 +221,11 @@
     <Content Include="Views\Providers\Details.cshtml" />
     <Content Include="Views\Providers\Edit.cshtml" />
     <Content Include="Views\Providers\Index.cshtml" />
+    <Content Include="Views\ListOfTypes\Create.cshtml" />
+    <Content Include="Views\ListOfTypes\Delete.cshtml" />
+    <Content Include="Views\ListOfTypes\Details.cshtml" />
+    <Content Include="Views\ListOfTypes\Edit.cshtml" />
+    <Content Include="Views\ListOfTypes\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -222,7 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

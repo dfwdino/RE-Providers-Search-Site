@@ -32,5 +32,7 @@ namespace RE
         public virtual DbSet<ListOfService> ListOfServices { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Type> Types { get; set; }
+        public virtual DbSet<ListOfType> ListOfTypes { get; set; }
     }
 }

@@ -12,15 +12,19 @@ namespace RE
     using System;
     using System.Collections.Generic;
     
-    public partial class Insurance
+    public partial class ListOfType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ListOfType()
+        {
+            this.Types = new HashSet<Type>();
+        }
+    
         public int ID { get; set; }
-        public int InsureanceID { get; set; }
-        public int ProviderID { get; set; }
+        public string Type { get; set; }
         public bool Hide { get; set; }
-        public List<int> SelectedInsurance { get; set; }
-
-        public virtual ListOfInsuranceCompany ListOfInsuranceCompany { get; set; }
-        public virtual Provider Provider { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Type> Types { get; set; }
     }
 }
