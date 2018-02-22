@@ -17,7 +17,7 @@ namespace RE
         public int ID { get; set; }
         public int ProviderID { get; set; }
         public int ServiceID { get; set; }
-        public int bit { get; set; }
+        public int Hide { get; set; }
         public List<int> SelectedService { get; set; }
 
 

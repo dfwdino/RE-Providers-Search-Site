@@ -20,7 +20,6 @@ namespace RE
         public bool Hide { get; set; }
         public List<int> SelectedType { get; set; }
 
-
         public virtual Provider Provider { get; set; }
         public virtual ListOfType ListOfType { get; set; }
     }

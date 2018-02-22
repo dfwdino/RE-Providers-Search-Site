@@ -80,7 +80,8 @@ namespace RE.Controllers
                 tempprovider.Website = provider.Website;
                 tempprovider.City = provider.City;
                 tempprovider.Email = provider.Email;
-
+                tempprovider.CreatedDate = DateTime.Now;
+                
                 foreach (var service in provider.Services)
                 {
                     foreach (var selectedservice in service.SelectedService)
@@ -89,6 +90,7 @@ namespace RE.Controllers
 
                         //newservice.ProviderID = tempprovider.ID;
                         newservice.ServiceID = selectedservice;
+                        
 
                         tempprovider.Services.Add(newservice);
 
@@ -102,7 +104,7 @@ namespace RE.Controllers
                         Insurance newinsurances = new Insurance();
 
                         newinsurances.InsureanceID = selectedinsurances;
-                        newinsurances.ProviderID = tempprovider.ID;
+                        //newinsurances.ProviderID = tempprovider.ID;
                         
 
                         tempprovider.Insurances.Add(newinsurances);
@@ -117,8 +119,9 @@ namespace RE.Controllers
                         Type newtype = new Type();
 
                         newtype.TypeID = selectedtype;
-                        newtype.ProviderID = tempprovider.ID;
+                        //newtype.ProviderID = tempprovider.ID;
                         
+
                         tempprovider.Types.Add(newtype);
 
                     }
@@ -156,11 +159,12 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Street,City,StateID,Zip,Email,Phone,Website,SlidingScale,DiscountCashPay,Hide")] Provider provider)
+        public ActionResult Edit(Provider provider)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(provider).State = EntityState.Modified;
+                provider.ModefiyDate = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

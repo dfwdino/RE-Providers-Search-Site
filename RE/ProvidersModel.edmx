@@ -41,14 +41,14 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProviderID" Type="int" Nullable="false" />
           <Property Name="ServiceID" Type="int" Nullable="false" />
-          <Property Name="bit" Type="int" Nullable="false" />
+          <Property Name="Hide" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Types">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeID" Type="int" Nullable="false" />
           <Property Name="ProviderID" Type="int" Nullable="false" />
           <Property Name="Hide" Type="bit" Nullable="false" />
         </EntityType>
@@ -224,8 +224,10 @@
           <EntitySet Name="Insurances" EntityType="REModel.Insurance" />
           <EntitySet Name="Providers" EntityType="REModel.Provider" />
           <EntitySet Name="Services" EntityType="REModel.Service" />
+          <EntitySet Name="Types" EntityType="REModel.Type" />
           <EntitySet Name="ListOfInsuranceCompanys" EntityType="REModel.ListOfInsuranceCompany" />
           <EntitySet Name="ListOfServices" EntityType="REModel.ListOfService" />
+          <EntitySet Name="ListOfTypes" EntityType="REModel.ListOfType" />
           <EntitySet Name="States" EntityType="REModel.State" />
           <EntitySet Name="Users" EntityType="REModel.User" />
           <AssociationSet Name="FK_Insurances_Insurances1" Association="REModel.FK_Insurances_Insurances1">
@@ -244,15 +246,13 @@
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Service" EntitySet="Services" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderServices_Services" Association="REModel.FK_ProviderServices_Services">
-            <End Role="ListOfService" EntitySet="ListOfServices" />
-            <End Role="Service" EntitySet="Services" />
-          </AssociationSet>
-          <EntitySet Name="Types" EntityType="REModel.Type" />
-          <EntitySet Name="ListOfTypes" EntityType="REModel.ListOfType" />
           <AssociationSet Name="FK_Types_Providers" Association="REModel.FK_Types_Providers">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Type" EntitySet="Types" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderServices_Services" Association="REModel.FK_ProviderServices_Services">
+            <End Role="ListOfService" EntitySet="ListOfServices" />
+            <End Role="Service" EntitySet="Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Types_ListOfTypes" Association="REModel.FK_Types_ListOfTypes">
             <End Role="ListOfType" EntitySet="ListOfTypes" />
@@ -263,7 +263,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="InsureanceID" Type="Int32" Nullable="false" />
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
           <Property Name="Hide" Type="Boolean" Nullable="false" />
@@ -286,24 +286,35 @@
           <Property Name="SlidingScale" Type="Boolean" />
           <Property Name="DiscountCashPay" Type="Boolean" />
           <Property Name="Hide" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Insurances" Relationship="REModel.FK_Insurances_Providers" FromRole="Provider" ToRole="Insurance" />
-          <NavigationProperty Name="State" Relationship="REModel.FK_Providers_States" FromRole="Provider" ToRole="State" />
-          <NavigationProperty Name="Services" Relationship="REModel.FK_ProviderServices_Provider" FromRole="Provider" ToRole="Service" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModefiyDate" Type="DateTime" Precision="3" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Insurances" Relationship="REModel.FK_Insurances_Providers" FromRole="Provider" ToRole="Insurance" />
+          <NavigationProperty Name="State" Relationship="REModel.FK_Providers_States" FromRole="Provider" ToRole="State" />
+          <NavigationProperty Name="Services" Relationship="REModel.FK_ProviderServices_Provider" FromRole="Provider" ToRole="Service" />
           <NavigationProperty Name="Types" Relationship="REModel.FK_Types_Providers" FromRole="Provider" ToRole="Type" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
           <Property Name="ServiceID" Type="Int32" Nullable="false" />
-          <Property Name="bit" Type="Int32" Nullable="false" />
+          <Property Name="Hide" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Provider" Relationship="REModel.FK_ProviderServices_Provider" FromRole="Service" ToRole="Provider" />
           <NavigationProperty Name="ListOfService" Relationship="REModel.FK_ProviderServices_Services" FromRole="Service" ToRole="ListOfService" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <Property Name="ProviderID" Type="Int32" Nullable="false" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Provider" Relationship="REModel.FK_Types_Providers" FromRole="Type" ToRole="Provider" />
+          <NavigationProperty Name="ListOfType" Relationship="REModel.FK_Types_ListOfTypes" FromRole="Type" ToRole="ListOfType" />
         </EntityType>
         <EntityType Name="ListOfInsuranceCompany">
           <Key>
@@ -322,6 +333,15 @@
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Hide" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Services" Relationship="REModel.FK_ProviderServices_Services" FromRole="ListOfService" ToRole="Service" />
+        </EntityType>
+        <EntityType Name="ListOfType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Types" Relationship="REModel.FK_Types_ListOfTypes" FromRole="ListOfType" ToRole="Type" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -389,38 +409,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderServices_Services">
-          <End Type="REModel.ListOfService" Role="ListOfService" Multiplicity="1" />
-          <End Type="REModel.Service" Role="Service" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ListOfService">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Service">
-              <PropertyRef Name="ServiceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Type">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProviderID" Type="Int32" Nullable="false" />
-          <Property Name="Hide" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Provider" Relationship="REModel.FK_Types_Providers" FromRole="Type" ToRole="Provider" />
-          <NavigationProperty Name="ListOfType" Relationship="REModel.FK_Types_ListOfTypes" FromRole="Type" ToRole="ListOfType" />
-        </EntityType>
-        <EntityType Name="ListOfType">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Hide" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Types" Relationship="REModel.FK_Types_ListOfTypes" FromRole="ListOfType" ToRole="Type" />
-        </EntityType>
         <Association Name="FK_Types_Providers">
           <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
           <End Type="REModel.Type" Role="Type" Multiplicity="*" />
@@ -430,6 +418,18 @@
             </Principal>
             <Dependent Role="Type">
               <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderServices_Services">
+          <End Type="REModel.ListOfService" Role="ListOfService" Multiplicity="1" />
+          <End Type="REModel.Service" Role="Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfService">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="ServiceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -485,9 +485,19 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="REModel.Service">
               <MappingFragment StoreEntitySet="Services">
-                <ScalarProperty Name="bit" ColumnName="bit" />
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Types">
+            <EntityTypeMapping TypeName="REModel.Type">
+              <MappingFragment StoreEntitySet="Types">
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -510,6 +520,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ListOfTypes">
+            <EntityTypeMapping TypeName="REModel.ListOfType">
+              <MappingFragment StoreEntitySet="ListOfTypes">
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="States">
             <EntityTypeMapping TypeName="REModel.State">
               <MappingFragment StoreEntitySet="States">
@@ -525,25 +544,6 @@
                 <ScalarProperty Name="Disable" ColumnName="Disable" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Types">
-            <EntityTypeMapping TypeName="REModel.Type">
-              <MappingFragment StoreEntitySet="Types">
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
-                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ListOfTypes">
-            <EntityTypeMapping TypeName="REModel.ListOfType">
-              <MappingFragment StoreEntitySet="ListOfTypes">
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

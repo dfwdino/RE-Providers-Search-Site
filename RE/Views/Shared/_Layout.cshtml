@@ -21,7 +21,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("RE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Login", "Index", "Login", null, new { @class = "navbar-brand" })
+                @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys == null){ 
+                        @Html.ActionLink("Login", "Index", "Login", null, new { @class = "navbar-brand" })
+}
             </div>
             @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys == true)
     {
