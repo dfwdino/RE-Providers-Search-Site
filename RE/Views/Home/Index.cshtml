@@ -1,186 +1,148 @@
-﻿@model List<Provider>
+﻿@model List<RE.Models.ProviderCreateModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
-
-
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
-
 
 <div style="padding-top:50px"></div>
 
 
-<div id="advancedsearcharea" style="display:block">
+<div id="advancedsearcharea" class="container-fluid">
 
-    <div id="advancedform" style="display:none">
+    <div id="advancedform">
 
         @using (Html.BeginForm())
-    {
-        <div class="row">
-            <div class="col-md-1">@Html.Label("Name: ")</div>
-            <div class="col-lg-1">@Html.TextBox("Name")</div>
-
-        </div>
-        <div style="padding-top:10px"></div>
-        <div class="row">
-            <div class="col-sm-1">@Html.Label("City: ")</div>
-            <div class="col-lg-1">@Html.TextBox("City")</div>
-            <div class="col-sm-1 col-md-offset-1">@Html.Label("State: ")</div>
-            <div class="col-lg-2">@Html.DropDownList("StateID", null, htmlAttributes: new { @class = "form-control" })</div>
-        </div>
-        <div style="padding-top:10px"></div>
-        <div class="row">
-            <div class="col-md-1">@Html.Label("Zip: ")</div>
-            <div class="col-lg-1">@Html.TextBox("Zip")</div>
-
-        </div>
-        <div style="padding-top:10px"></div>
-        <div class="row">
-            <div class="col-md-2">
-                @Html.Label("Sliding Scale:")
-            </div>
-            <div class="col-sm-1">
-                @Html.CheckBox("SlidingScale")
-            </div>
-            <div class="col-lg-2">
-                @Html.Label("Discount Cash Pay:")
-            </div>
-            <div class="col-sm-1 col-sm-offset-0">
-                @Html.CheckBox("DiscountCashPay")
-            </div>
-        </div>
-        <div style="padding-top:10px"></div>
-        <div id="Services">
+        {
             <div class="row">
-                <div class="col-lg-1">@Html.Label("Services:")</div>
-                <div class="col-lg-10">
-                    @foreach (var item in ViewBag.ListOfServices)
-                {
-                    <label for="Services[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Services[0].SelectedService"
-                               id="Services[@item.ID][0]" value="@item.ID" />
-                        @item.Name
-                    </label>
-            }
+                <div class="col-md-1">@Html.Label("Name: ")</div>
+                <div class="col-lg-1">@Html.TextBox("Name")</div>
+
+            </div>
+            <div style="padding-top:10px"></div>
+            <div class="row">
+                <div class="col-sm-1">@Html.Label("City: ")</div>
+                <div class="col-lg-2">@Html.TextBox("City")</div>
+                <div class="col-md-1">@Html.Label("State: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("StateID", null, htmlAttributes: new { @class = "form-control" })</div>
+                <div class="col-md-1">@Html.Label("Zip: ")</div>
+                <div class="col-lg-1">@Html.TextBox("Zip")</div>
+            </div>
+            <div style="padding-top:10px"></div>
+            <div class="row">
+                <div class="col-sm-2">
+                    @Html.Label("Sliding Scale:")  @Html.CheckBox("SlidingScale")
                 </div>
-            </div>
-        </div>
-        <div style="padding-top:10px"></div>
-        <div id="Insureance">
-            <div class="row">
-                <div class="col-lg-1">@Html.Label("Insurance:")</div>
-                <div class="col-lg-10">
-
-                    @foreach (var item in ViewBag.ListOfInsuranceCompanys)
-                {
-                    <label for="Insurances[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Insurances[0].SelectedInsurance"
-                               id="Insurances[@item.ID][0]" value="@item.ID" />
-                        @item.Name
-                    </label>
-            }
+                <div class="col-sm-3">
+                    @Html.Label("Discount Cash Pay:") @Html.CheckBox("DiscountCashPay")
                 </div>
 
             </div>
-        </div>
-        <div style="padding-top:10px"></div>
-        <div id="Types">
-            <div class="row">
-                <div class="col-lg-1">@Html.Label("Types:")</div>
-                <div class="col-lg-10">
-
-                    @foreach (var item in ViewBag.ListOfTypes)
-                {
-                    <label for="Types[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
-                               id="Types[@item.ID][0]" value="@item.ID" />
-                        @item.Type
-                    </label>
-            }
+            <div style="padding-top:10px"></div>
+            <div id="Services">
+                <div class="row">
+                    <div class="col-lg-1">@Html.Label("Services:")</div>
+                    <div class="col-lg-10">
+                        @foreach (var item in ViewBag.ListOfServices)
+                        {
+                            <label for="Services[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Services[0].SelectedService"
+                                       id="Services[@item.ID][0]" value="@item.ID" />
+                                @item.Name
+                            </label>
+                        }
+                    </div>
                 </div>
-
             </div>
-        </div>
+            <div style="padding-top:10px"></div>
+            <div id="Insureance">
+                <div class="row">
+                    <div class="col-lg-1">@Html.Label("Insurance:")</div>
+                    <div class="col-lg-10">
 
-        <div style="padding-top:10px"></div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <input type="submit" value="Search" class="btn btn-default" />
+                        @foreach (var item in ViewBag.ListOfInsuranceCompanys)
+                        {
+                            <label for="Insurances[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Insurances[0].SelectedInsurance"
+                                       id="Insurances[@item.ID][0]" value="@item.ID" />
+                                @item.Name
+                            </label>
+                        }
+                    </div>
+
+                </div>
             </div>
-        </div>
-}
+            <div style="padding-top:10px"></div>
+            <div id="Types">
+                <div class="row">
+                    <div class="col-lg-1">@Html.Label("Types:")</div>
+                    <div class="col-lg-10">
+
+                        @foreach (var item in ViewBag.ListOfTypes)
+                        {
+                            <label for="Types[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
+                                       id="Types[@item.ID][0]" value="@item.ID" />
+                                @item.Type
+                            </label>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="padding-top:10px"></div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        }
     </div>
-    <div style="padding-top:30px"></div>
-    <div  style="display:block"><span id="advancedsearclink">Advanced Search</span></div>
 
 </div>
 
-<div style="padding-top:25px"></div>
+<div style="padding-top:40px"></div>
 
-<table id="providers" class="table table-striped table-bordered" width="100%" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Website</th>
-            <th>Sliding Scale</th>
-            <th>Discount Cash Pay</th>
-            <th>Services</th>
-            <th>Insurance</th>
-            <th>Types</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Website</th>
-            <th>Sliding Scale</th>
-            <th>Discount Cash Pay</th>
-            <th>Services</th>
-            <th>Insurance</th>
-            <th>Types</th>
-            <th>Notes</th>
-        </tr>
-    </tfoot>
-    <tbody>
+@foreach (var provider in Model)
+{
 
-        @foreach (var item in Model)
-        {
-        <tr>
-            <th>@item.Name</th>
-            <th>@String.Format("{0} {1} {2}", item.Street, item.State?.Abbrev, item.Zip) </th>
-            <th>@item.Email</th>
-            <th>@item.Phone</th>
-            <th>@item.Website</th>
-            <th>@(item.SlidingScale == null ? "Unknown" : item.SlidingScale.ToString())</th>
-            <th>@(item.DiscountCashPay == null ? "Unknown" : item.DiscountCashPay.ToString())</th>
-            <th>@string.Join(",", @item.Services.Select(m => m.ListOfService.Name).ToArray())</th>
-            <th>@string.Join(",", @item.Insurances.Select(m => m.ListOfInsuranceCompany.Name).ToArray())</th>
-            <th>@string.Join(",", @item.Types.Select(m => m.ListOfType.Type).ToArray())</th>
-            <th>@item.Notes</th>
-        </tr>
-        }
+<table style="margin-top:10px">
+       <tr>
+        <td><img src="~/Content/Images/Providers/FB_IMG_1448153373161.jpg" style="width:75px;height:75px;" /></td>
+        <td width="100px">@provider.Name</td>
 
-    </tbody>
+        <td width="150px">@provider.Street <br/> @provider.State.Name @provider.Zip</td>
+        
+        <td width="250px">
+            @Html.Label(" Types:", new { @class = "Header" }) @String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))
+            <br />
+            @Html.Label("Insurances:", new { @class = "Header" }) @String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name))
+            <br />
+            @Html.Label("Services:", new { @class = "Header" }) @String.Join(",", @provider.Services.Select(m => m.ListOfService.Services))
+        </td>
+        
+    </tr>
 </table>
+}
 
 
+<style>
+    TD {
+        text-align:center;
+    }
+
+    /*table:nth-of-type(odd) {
+        background-color: #ff0000;
+    }*/
+
+    table:nth-of-type(even) {
+        background-color: #808080;
+    }
+</style>
 
 <script>
-    $(document).ready(function () {
-        $('#providers').DataTable();
-    });
 
     $("#advancedsearclink").click(function () {
         $("#advancedform").toggle();
@@ -189,7 +151,6 @@
             $('#advancedsearclink').text("Advanced Search");
         }
         else {
-            console.log('I see you');
             $('#advancedsearclink').text("Hide Advanced Search");
         }
 

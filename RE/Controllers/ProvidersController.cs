@@ -58,7 +58,7 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Provider provider)
+        public ActionResult Create(Models.ProviderCreateModel provider)
         {
 
             if (ModelState.IsValid)
@@ -164,7 +164,7 @@ namespace RE.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(provider).State = EntityState.Modified;
-                provider.ModefiyDate = DateTime.Now;
+                provider.ModifiedDate = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

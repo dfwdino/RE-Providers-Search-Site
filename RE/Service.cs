@@ -18,10 +18,10 @@ namespace RE
         public int ProviderID { get; set; }
         public int ServiceID { get; set; }
         public int Hide { get; set; }
-        public List<int> SelectedService { get; set; }
-
-
-        public virtual Provider Provider { get; set; }
+    
         public virtual ListOfService ListOfService { get; set; }
+        public virtual Service Services1 { get; set; }
+        public virtual Service Service1 { get; set; }
+        public virtual Provider Provider { get; set; }
     }
 }

@@ -21,15 +21,12 @@ namespace RE.Controllers
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).ToList();
             ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).ToList();
-
-            List<Provider> providers = db.Providers.Where(m => m.Hide == false).ToList();
-
-
-            return View(providers);
+            
+            return View(new List<Models.ProviderCreateModel>());
         }
 
         [HttpPost]
-        public ActionResult Index(Provider providersearch)
+        public ActionResult Index(Models.ProviderCreateModel providersearch)
         {
             List<State> states = db.States.ToList();
             states.Add(new State() { ID = 0, Name = " ---Select---" });
@@ -114,7 +111,7 @@ namespace RE.Controllers
 
                 }
             }
-
+                        
 
             return View(searchproviders);
         }

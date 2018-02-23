@@ -1,0 +1,185 @@
+﻿<#@ template hostspecific="true" language="C#"
+#><#@ assembly name="System.Core" 
+#><#@ import namespace="System.Linq" 
+#><#@ import namespace="System.Text" 
+#><#@ import namespace="System.Collections.Generic" 
+#><#@ output extension=".cs" #>
+<#@ import namespace="System.IO" #>
+<#@ assembly name="System.Data" 
+#><#@ import namespace="System.Data.SqlClient" #>
+<#    foreach (var table in GetTables()) { 
+#>
+
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+
+namespace STracker.Models
+{
+	public class <#=            table.TableName #>
+	{
+
+		public <#=            table.TableName #>()
+		{
+			
+		}
+
+
+<#        foreach (var col in GetColumns(table.TableName)) { #>
+<#            if(col.ISNULLABLE.Trim() == "NO"){#>
+        [Required]
+<#}#>
+        [DisplayName("<#= FormatName(col.COLUMNNAME) #>")]
+        public <#=GetNetDataType(col.DATATYPE) #> <#=col.COLUMNNAME #> { get; set; }
+
+<#        }#>}}
+
+
+<#SaveOutput(@"..\..\Models\" + table.TableName + "-model.cs");
+}#>
+
+
+<#+
+
+static public string connectionString = "Server=AGAIN\\SQLEXPRESS;Initial Catalog=RE;Trusted_Connection=True;";
+
+void SaveOutput(string outputFileName)
+  {
+	  string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);
+	  string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+	  File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+
+	  this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+  }
+
+ public static List<DatabaseColumns> GetColumns(string table)
+		{
+	
+
+			List<DatabaseColumns> colums = new List<DatabaseColumns>();
+			using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+			{
+				SqlCommand command = new SqlCommand("SELECT COLUMN_NAME,DATA_TYPE,IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'" + table + "'", sqlConnection);
+			  
+				sqlConnection.Open();
+
+				var reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					DatabaseColumns columtable = new DatabaseColumns();
+					columtable.COLUMNNAME = reader.GetString(0);
+					columtable.DATATYPE = reader.GetString(1);
+					columtable.ISNULLABLE = reader.GetString(2);
+
+					colums.Add(columtable);
+				}
+			}
+
+			return colums;
+		}
+
+public static string GetNetDataType(string sqlDataTypeName)
+	{
+		switch (sqlDataTypeName.ToLower())
+		{
+			case "bigint":
+				return "Int64";
+			case "binary":
+			case "image":
+			case "varbinary":
+				return "byte[]";
+			case "bit":
+				return "bool";
+			case "char":
+				return "char";
+			case "datetime":
+			case "date":
+			case "smalldatetime":
+				return "DateTime";
+			case "decimal":
+			case "money":
+			case "numeric":
+				return "decimal";
+			case "float":
+				return "double";
+			case "int":
+				return "int";
+			case "nchar":
+			case "nvarchar":
+			case "text":
+			case "varchar":
+			case "xml":
+				return "string";
+			case "real":
+				return "single";
+			case "smallint":
+				return "Int16";
+			case "tinyint":
+				return "byte";
+			case "uniqueidentifier":
+				return "Guid";
+				 
+			default:
+				return sqlDataTypeName;
+		}
+	}
+
+public static List<DatabaseTable> GetTables()
+{
+	 List<DatabaseTable> tables = new  List<DatabaseTable>();
+	using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+	{
+		//SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'", sqlConnection);
+		SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' and TABLE_Name = 'Services'", sqlConnection);
+		sqlConnection.Open();
+
+		var reader = command.ExecuteReader();
+		while (reader.Read())
+		{
+			DatabaseTable table = new DatabaseTable();
+			table.TableName = reader.GetString(0);
+		   
+			tables.Add(table);
+		}
+	}
+
+	return tables;
+}
+
+public static string FormatName(string text)
+	{
+
+		if (text.ToUpper() == text)
+			return text;
+
+		StringBuilder newText = new StringBuilder(text.Length * 2);
+		newText.Append(text[0]);
+		for (int i = 1; i < text.Length; i++)
+		{
+			if (char.IsUpper(text[i]) && text[i - 1] != ' ')
+			{
+				if (char.IsUpper(text[i]) && !char.IsUpper(text[i - 1]))
+					newText.Append(' ');
+			}
+
+			newText.Append(text[i]);
+		}
+
+		return newText.ToString();
+}
+
+public class DatabaseTable
+{
+	public string TableName { get; set; }
+
+}
+
+public class DatabaseColumns
+{
+	public string COLUMNNAME { get; set; }
+	public string DATATYPE { get; set; }
+	public string ISNULLABLE { get; set; }
+}
+
+#>

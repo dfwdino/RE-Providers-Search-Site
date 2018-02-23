@@ -18,9 +18,8 @@ namespace RE
         public int TypeID { get; set; }
         public int ProviderID { get; set; }
         public bool Hide { get; set; }
-        public List<int> SelectedType { get; set; }
-
-        public virtual Provider Provider { get; set; }
+    
         public virtual ListOfType ListOfType { get; set; }
+        public virtual Provider Provider { get; set; }
     }
 }

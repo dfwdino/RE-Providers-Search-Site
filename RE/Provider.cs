@@ -35,8 +35,10 @@ namespace RE
         public Nullable<bool> DiscountCashPay { get; set; }
         public bool Hide { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<System.DateTime> ModefiyDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Notes { get; set; }
+        public string IMGLocation { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Insurance> Insurances { get; set; }

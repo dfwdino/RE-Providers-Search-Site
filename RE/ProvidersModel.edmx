@@ -31,8 +31,10 @@
           <Property Name="DiscountCashPay" Type="bit" />
           <Property Name="Hide" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="ModefiyDate" Type="datetime" />
+          <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="IMGLocation" Type="nvarchar" MaxLength="255" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Services">
           <Key>
@@ -129,7 +131,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderServices_Provider">
+        <Association Name="FK_ProviderServices_Services">
+          <End Role="ListOfServices" Type="Self.ListOfServices" Multiplicity="1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfServices">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Providers">
           <End Role="Providers" Type="Self.Providers" Multiplicity="1" />
           <End Role="Services" Type="Self.Services" Multiplicity="*" />
           <ReferentialConstraint>
@@ -141,15 +155,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderServices_Services">
-          <End Role="ListOfServices" Type="Self.ListOfServices" Multiplicity="1" />
-          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+        <Association Name="FK_Services_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
+          <End Role="Services1" Type="Self.Services" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="ListOfServices">
+            <Principal Role="Services">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Services">
-              <PropertyRef Name="ServiceID" />
+            <Dependent Role="Services1">
+              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -199,13 +213,17 @@
             <End Role="States" EntitySet="States" />
             <End Role="Providers" EntitySet="Providers" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderServices_Provider" Association="Self.FK_ProviderServices_Provider">
-            <End Role="Providers" EntitySet="Providers" />
-            <End Role="Services" EntitySet="Services" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProviderServices_Services" Association="Self.FK_ProviderServices_Services">
             <End Role="ListOfServices" EntitySet="ListOfServices" />
             <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Providers" Association="Self.FK_Services_Providers">
+            <End Role="Providers" EntitySet="Providers" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Services" Association="Self.FK_Services_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Services1" EntitySet="Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Types_ListOfTypes" Association="Self.FK_Types_ListOfTypes">
             <End Role="ListOfTypes" EntitySet="ListOfTypes" />
@@ -222,18 +240,30 @@
       <Schema Namespace="REModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="REEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Insurances" EntityType="REModel.Insurance" />
-          <EntitySet Name="Providers" EntityType="REModel.Provider" />
           <EntitySet Name="Services" EntityType="REModel.Service" />
           <EntitySet Name="Types" EntityType="REModel.Type" />
           <EntitySet Name="ListOfInsuranceCompanys" EntityType="REModel.ListOfInsuranceCompany" />
           <EntitySet Name="ListOfServices" EntityType="REModel.ListOfService" />
           <EntitySet Name="ListOfTypes" EntityType="REModel.ListOfType" />
-          <EntitySet Name="States" EntityType="REModel.State" />
           <EntitySet Name="Users" EntityType="REModel.User" />
           <AssociationSet Name="FK_Insurances_Insurances1" Association="REModel.FK_Insurances_Insurances1">
             <End Role="ListOfInsuranceCompany" EntitySet="ListOfInsuranceCompanys" />
             <End Role="Insurance" EntitySet="Insurances" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProviderServices_Services" Association="REModel.FK_ProviderServices_Services">
+            <End Role="ListOfService" EntitySet="ListOfServices" />
+            <End Role="Service" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Types_ListOfTypes" Association="REModel.FK_Types_ListOfTypes">
+            <End Role="ListOfType" EntitySet="ListOfTypes" />
+            <End Role="Type" EntitySet="Types" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Services" Association="REModel.FK_Services_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Service1" EntitySet="Services" />
+          </AssociationSet>
+          <EntitySet Name="Providers" EntityType="REModel.Provider" />
+          <EntitySet Name="States" EntityType="REModel.State" />
           <AssociationSet Name="FK_Insurances_Providers" Association="REModel.FK_Insurances_Providers">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Insurance" EntitySet="Insurances" />
@@ -242,20 +272,12 @@
             <End Role="State" EntitySet="States" />
             <End Role="Provider" EntitySet="Providers" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderServices_Provider" Association="REModel.FK_ProviderServices_Provider">
+          <AssociationSet Name="FK_Services_Providers" Association="REModel.FK_Services_Providers">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Service" EntitySet="Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Types_Providers" Association="REModel.FK_Types_Providers">
             <End Role="Provider" EntitySet="Providers" />
-            <End Role="Type" EntitySet="Types" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProviderServices_Services" Association="REModel.FK_ProviderServices_Services">
-            <End Role="ListOfService" EntitySet="ListOfServices" />
-            <End Role="Service" EntitySet="Services" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Types_ListOfTypes" Association="REModel.FK_Types_ListOfTypes">
-            <End Role="ListOfType" EntitySet="ListOfTypes" />
             <End Role="Type" EntitySet="Types" />
           </AssociationSet>
         </EntityContainer>
@@ -270,30 +292,6 @@
           <NavigationProperty Name="ListOfInsuranceCompany" Relationship="REModel.FK_Insurances_Insurances1" FromRole="Insurance" ToRole="ListOfInsuranceCompany" />
           <NavigationProperty Name="Provider" Relationship="REModel.FK_Insurances_Providers" FromRole="Insurance" ToRole="Provider" />
         </EntityType>
-        <EntityType Name="Provider">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="StateID" Type="Int32" />
-          <Property Name="Zip" Type="Double" />
-          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SlidingScale" Type="Boolean" />
-          <Property Name="DiscountCashPay" Type="Boolean" />
-          <Property Name="Hide" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModefiyDate" Type="DateTime" Precision="3" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Insurances" Relationship="REModel.FK_Insurances_Providers" FromRole="Provider" ToRole="Insurance" />
-          <NavigationProperty Name="State" Relationship="REModel.FK_Providers_States" FromRole="Provider" ToRole="State" />
-          <NavigationProperty Name="Services" Relationship="REModel.FK_ProviderServices_Provider" FromRole="Provider" ToRole="Service" />
-          <NavigationProperty Name="Types" Relationship="REModel.FK_Types_Providers" FromRole="Provider" ToRole="Type" />
-        </EntityType>
         <EntityType Name="Service">
           <Key>
             <PropertyRef Name="ID" />
@@ -302,8 +300,10 @@
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
           <Property Name="ServiceID" Type="Int32" Nullable="false" />
           <Property Name="Hide" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Provider" Relationship="REModel.FK_ProviderServices_Provider" FromRole="Service" ToRole="Provider" />
           <NavigationProperty Name="ListOfService" Relationship="REModel.FK_ProviderServices_Services" FromRole="Service" ToRole="ListOfService" />
+          <NavigationProperty Name="Services1" Relationship="REModel.FK_Services_Services" FromRole="Service" ToRole="Service1" />
+          <NavigationProperty Name="Service1" Relationship="REModel.FK_Services_Services" FromRole="Service1" ToRole="Service" />
+          <NavigationProperty Name="Provider" Relationship="REModel.FK_Services_Providers" FromRole="Service" ToRole="Provider" />
         </EntityType>
         <EntityType Name="Type">
           <Key>
@@ -313,8 +313,8 @@
           <Property Name="TypeID" Type="Int32" Nullable="false" />
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
           <Property Name="Hide" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Provider" Relationship="REModel.FK_Types_Providers" FromRole="Type" ToRole="Provider" />
           <NavigationProperty Name="ListOfType" Relationship="REModel.FK_Types_ListOfTypes" FromRole="Type" ToRole="ListOfType" />
+          <NavigationProperty Name="Provider" Relationship="REModel.FK_Types_Providers" FromRole="Type" ToRole="Provider" />
         </EntityType>
         <EntityType Name="ListOfInsuranceCompany">
           <Key>
@@ -343,15 +343,6 @@
           <Property Name="Hide" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Types" Relationship="REModel.FK_Types_ListOfTypes" FromRole="ListOfType" ToRole="Type" />
         </EntityType>
-        <EntityType Name="State">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="Abbrev" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Providers" Relationship="REModel.FK_Providers_States" FromRole="State" ToRole="Provider" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -370,54 +361,6 @@
             </Principal>
             <Dependent Role="Insurance">
               <PropertyRef Name="InsureanceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Insurances_Providers">
-          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
-          <End Type="REModel.Insurance" Role="Insurance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Provider">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Insurance">
-              <PropertyRef Name="ProviderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Providers_States">
-          <End Type="REModel.State" Role="State" Multiplicity="0..1" />
-          <End Type="REModel.Provider" Role="Provider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="State">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Provider">
-              <PropertyRef Name="StateID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProviderServices_Provider">
-          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
-          <End Type="REModel.Service" Role="Service" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Provider">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Service">
-              <PropertyRef Name="ProviderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Types_Providers">
-          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
-          <End Type="REModel.Type" Role="Type" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Provider">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Type">
-              <PropertyRef Name="ProviderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -445,6 +388,101 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Services_Services">
+          <End Type="REModel.Service" Role="Service" Multiplicity="1" />
+          <End Type="REModel.Service" Role="Service1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Service1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Provider">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="StateID" Type="Int32" />
+          <Property Name="Zip" Type="Double" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SlidingScale" Type="Boolean" />
+          <Property Name="DiscountCashPay" Type="Boolean" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IMGLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Insurances" Relationship="REModel.FK_Insurances_Providers" FromRole="Provider" ToRole="Insurance" />
+          <NavigationProperty Name="State" Relationship="REModel.FK_Providers_States" FromRole="Provider" ToRole="State" />
+          <NavigationProperty Name="Services" Relationship="REModel.FK_Services_Providers" FromRole="Provider" ToRole="Service" />
+          <NavigationProperty Name="Types" Relationship="REModel.FK_Types_Providers" FromRole="Provider" ToRole="Type" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Abbrev" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Providers" Relationship="REModel.FK_Providers_States" FromRole="State" ToRole="Provider" />
+        </EntityType>
+        <Association Name="FK_Insurances_Providers">
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="REModel.Insurance" Role="Insurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Insurance">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Providers_States">
+          <End Type="REModel.State" Role="State" Multiplicity="0..1" />
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Providers">
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="REModel.Service" Role="Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Types_Providers">
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="REModel.Type" Role="Type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Type">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -457,27 +495,6 @@
                 <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
                 <ScalarProperty Name="InsureanceID" ColumnName="InsureanceID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Providers">
-            <EntityTypeMapping TypeName="REModel.Provider">
-              <MappingFragment StoreEntitySet="Providers">
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="ModefiyDate" ColumnName="ModefiyDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="DiscountCashPay" ColumnName="DiscountCashPay" />
-                <ScalarProperty Name="SlidingScale" ColumnName="SlidingScale" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="StateID" ColumnName="StateID" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Street" ColumnName="Street" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -529,21 +546,44 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="States">
-            <EntityTypeMapping TypeName="REModel.State">
-              <MappingFragment StoreEntitySet="States">
-                <ScalarProperty Name="Abbrev" ColumnName="Abbrev" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="REModel.User">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="Disable" ColumnName="Disable" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Providers">
+            <EntityTypeMapping TypeName="REModel.Provider">
+              <MappingFragment StoreEntitySet="Providers">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="IMGLocation" ColumnName="IMGLocation" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="DiscountCashPay" ColumnName="DiscountCashPay" />
+                <ScalarProperty Name="SlidingScale" ColumnName="SlidingScale" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="REModel.State">
+              <MappingFragment StoreEntitySet="States">
+                <ScalarProperty Name="Abbrev" ColumnName="Abbrev" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

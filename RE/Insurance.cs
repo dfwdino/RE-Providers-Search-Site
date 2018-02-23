@@ -18,8 +18,7 @@ namespace RE
         public int InsureanceID { get; set; }
         public int ProviderID { get; set; }
         public bool Hide { get; set; }
-        public List<int> SelectedInsurance { get; set; }
-
+    
         public virtual ListOfInsuranceCompany ListOfInsuranceCompany { get; set; }
         public virtual Provider Provider { get; set; }
     }
