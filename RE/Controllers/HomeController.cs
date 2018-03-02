@@ -18,13 +18,13 @@ namespace RE.Controllers
             
             ViewBag.StateID = new SelectList(states.OrderBy(m => m.Name), "ID", "Name");
             
-            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).ToList();
+            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
             
             return View(new List<Models.ProviderCreateModel>());
         }
-
+        
         [HttpPost]
         public ActionResult Index(Models.ProviderCreateModel providersearch)
         {
@@ -32,11 +32,11 @@ namespace RE.Controllers
             states.Add(new State() { ID = 0, Name = " ---Select---" });
 
             ViewBag.StateID = new SelectList(states.OrderBy(m => m.Name), "ID", "Name");
-            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).ToList();
+            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
 
-            var providers = db.Providers.Include(c => c.Insurances).Include(c => c.Services).Where(m => m.Hide == false);
+            var providers = db.Providers.Include(c => c.Insurances).Include(c => c.Services).Include(c => c.State).Where(m => m.Hide == false);
 
             if (providersearch.Name != null)
             {
@@ -111,9 +111,11 @@ namespace RE.Controllers
 
                 }
             }
-                        
 
-            return View(searchproviders);
+            TempData["SearchProvider"] = searchproviders;
+            //return RedirectToAction("Search", "Home", searchproviders.ToList());
+            return View(new List<Models.ProviderCreateModel>());
+            
         }
 
     }

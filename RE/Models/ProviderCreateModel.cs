@@ -38,5 +38,7 @@ namespace RE.Models
         
         public virtual IList<Models.TypesCreateModel> Types { get; set; }
 
+        public IList<Provider> Providers { get; set; }
+
     }
 }

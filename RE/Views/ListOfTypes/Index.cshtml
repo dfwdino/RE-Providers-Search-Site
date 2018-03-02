@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<RE.ListOfType>
+@using System.Globalization;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Create Types";
 }
 
-<h2>Index</h2>
+<h2>Create Types</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -20,20 +21,21 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Hide)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.Label(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Type).Trim())
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Hide)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
 </table>

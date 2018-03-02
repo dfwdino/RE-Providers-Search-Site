@@ -20,8 +20,6 @@ namespace RE
         public int Hide { get; set; }
     
         public virtual ListOfService ListOfService { get; set; }
-        public virtual Service Services1 { get; set; }
-        public virtual Service Service1 { get; set; }
         public virtual Provider Provider { get; set; }
     }
 }

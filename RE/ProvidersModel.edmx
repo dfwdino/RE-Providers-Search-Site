@@ -258,10 +258,6 @@
             <End Role="ListOfType" EntitySet="ListOfTypes" />
             <End Role="Type" EntitySet="Types" />
           </AssociationSet>
-          <AssociationSet Name="FK_Services_Services" Association="REModel.FK_Services_Services">
-            <End Role="Service" EntitySet="Services" />
-            <End Role="Service1" EntitySet="Services" />
-          </AssociationSet>
           <EntitySet Name="Providers" EntityType="REModel.Provider" />
           <EntitySet Name="States" EntityType="REModel.State" />
           <AssociationSet Name="FK_Insurances_Providers" Association="REModel.FK_Insurances_Providers">
@@ -301,8 +297,6 @@
           <Property Name="ServiceID" Type="Int32" Nullable="false" />
           <Property Name="Hide" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ListOfService" Relationship="REModel.FK_ProviderServices_Services" FromRole="Service" ToRole="ListOfService" />
-          <NavigationProperty Name="Services1" Relationship="REModel.FK_Services_Services" FromRole="Service" ToRole="Service1" />
-          <NavigationProperty Name="Service1" Relationship="REModel.FK_Services_Services" FromRole="Service1" ToRole="Service" />
           <NavigationProperty Name="Provider" Relationship="REModel.FK_Services_Providers" FromRole="Service" ToRole="Provider" />
         </EntityType>
         <EntityType Name="Type">
@@ -385,18 +379,6 @@
             </Principal>
             <Dependent Role="Type">
               <PropertyRef Name="TypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Services_Services">
-          <End Type="REModel.Service" Role="Service" Multiplicity="1" />
-          <End Type="REModel.Service" Role="Service1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Service">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Service1">
-              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

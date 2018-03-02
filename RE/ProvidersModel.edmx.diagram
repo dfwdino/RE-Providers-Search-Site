@@ -15,7 +15,6 @@
         <AssociationConnector Association="REModel.FK_Insurances_Insurances1" />
         <AssociationConnector Association="REModel.FK_ProviderServices_Services" />
         <AssociationConnector Association="REModel.FK_Types_ListOfTypes" />
-        <AssociationConnector Association="REModel.FK_Services_Services" />
         <EntityTypeShape EntityType="REModel.Provider" Width="1.5" PointX="3.125" PointY="3" />
         <EntityTypeShape EntityType="REModel.State" Width="1.5" PointX="0.625" PointY="3" />
         <AssociationConnector Association="REModel.FK_Insurances_Providers" />

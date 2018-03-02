@@ -1,7 +1,9 @@
 ﻿@model List<RE.Models.ProviderCreateModel>
+@using System.Globalization;
 
 @{
     ViewBag.Title = "Index";
+    string address = "";
 }
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -29,70 +31,77 @@
                 <div class="col-md-1">@Html.Label("Zip: ")</div>
                 <div class="col-lg-1">@Html.TextBox("Zip")</div>
             </div>
-            <div style="padding-top:10px"></div>
-            <div class="row">
-                <div class="col-sm-2">
-                    @Html.Label("Sliding Scale:")  @Html.CheckBox("SlidingScale")
-                </div>
-                <div class="col-sm-3">
-                    @Html.Label("Discount Cash Pay:") @Html.CheckBox("DiscountCashPay")
-                </div>
+            <hr />
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Insurance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Types</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel4" role="tab">Payment Discount</a>
+                </li>
+            </ul>
 
-            </div>
-            <div style="padding-top:10px"></div>
-            <div id="Services">
-                <div class="row">
-                    <div class="col-lg-1">@Html.Label("Services:")</div>
-                    <div class="col-lg-10">
+            <div class="tab-content card">
+                <div class="tab-pane fade" id="panel1" role="tabpanel">
+                    <br>
+                    <p>
                         @foreach (var item in ViewBag.ListOfServices)
                         {
                             <label for="Services[@item.ID][0]">
                                 <input style="margin-left:5px" type="checkbox" name="Services[0].SelectedService"
                                        id="Services[@item.ID][0]" value="@item.ID" />
-                                @item.Name
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
                             </label>
                         }
-                    </div>
+                    </p>
                 </div>
-            </div>
-            <div style="padding-top:10px"></div>
-            <div id="Insureance">
-                <div class="row">
-                    <div class="col-lg-1">@Html.Label("Insurance:")</div>
-                    <div class="col-lg-10">
 
+                <div class="tab-pane fade" id="panel2" role="tabpanel">
+                    <br>
+                    <p>
                         @foreach (var item in ViewBag.ListOfInsuranceCompanys)
                         {
                             <label for="Insurances[@item.ID][0]">
                                 <input style="margin-left:5px" type="checkbox" name="Insurances[0].SelectedInsurance"
                                        id="Insurances[@item.ID][0]" value="@item.ID" />
-                                @item.Name
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
                             </label>
                         }
-                    </div>
+                    </p>
 
                 </div>
-            </div>
-            <div style="padding-top:10px"></div>
-            <div id="Types">
-                <div class="row">
-                    <div class="col-lg-1">@Html.Label("Types:")</div>
-                    <div class="col-lg-10">
 
+                <div class="tab-pane fade" id="panel3" role="tabpanel">
+                    <br>
+                    <p>
                         @foreach (var item in ViewBag.ListOfTypes)
                         {
                             <label for="Types[@item.ID][0]">
                                 <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
                                        id="Types[@item.ID][0]" value="@item.ID" />
-                                @item.Type
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Type)
                             </label>
                         }
-                    </div>
-
+                    </p>
                 </div>
+
+                <div class="tab-pane fade" id="panel4" role="tabpanel">
+                    <br>
+                    <p>
+                        <label for="SlidingScale">@Html.CheckBox("SlidingScale") Sliding Scale</label>
+                        <label for="DiscountCashPay">@Html.CheckBox("DiscountCashPay") Discount Cash Pay</label>
+                    </p>
+                </div>
+
             </div>
 
-            <div style="padding-top:10px"></div>
+            <div style="padding-top:40px"></div>
             <div class="form-group">
                 <div class="col-md-10">
                     <input type="submit" value="Search" class="btn btn-default" />
@@ -105,32 +114,53 @@
 
 <div style="padding-top:40px"></div>
 
-@foreach (var provider in Model)
+@if (TempData["SearchProvider"] == null)
+{ return; }
+
+@foreach (var provider in (List<Provider>)TempData["SearchProvider"])
 {
+    {
+        address = $"{provider.Street},{(provider.State != null ? provider.State.Name : "Unknowen")},{provider.Zip}";
+    }
 
-<table style="margin-top:10px">
-       <tr>
-        <td><img src="~/Content/Images/Providers/FB_IMG_1448153373161.jpg" style="width:75px;height:75px;" /></td>
-        <td width="100px">@provider.Name</td>
+    <table style="margin-top:10px" align="center">
+        <tr>
+            <td>
+                <img src="~/Content/Images/Providers/FB_IMG_1448153373161.jpg" style="width:75px;height:75px;" /><br />
+                <span><b>Updated:</b></span> @(provider.ModifiedDate.HasValue ? provider.ModifiedDate?.ToShortDateString() : provider.CreatedDate.ToShortDateString() )
+            </td>
+            <td width="100px">
+                <div style="margin-bottom:-21px">@provider.Name</div>
+                @if (@provider.Website != null)
+                {<br /><div style="margin-bottom:-21px;border-top:1px solid">
+                        <a href='@provider.Website' target="_blank">Website</a>
+                    </div>}
+                @if (@provider.Email != null)
+                {<br /><div style="margin-bottom:-21px;border-top:1px solid"><a href="mailto:@provider.Email">@provider.Email</a></div>}
+            </td>
 
-        <td width="150px">@provider.Street <br/> @provider.State.Name @provider.Zip</td>
-        
-        <td width="250px">
-            @Html.Label(" Types:", new { @class = "Header" }) @String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))
-            <br />
-            @Html.Label("Insurances:", new { @class = "Header" }) @String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name))
-            <br />
-            @Html.Label("Services:", new { @class = "Header" }) @String.Join(",", @provider.Services.Select(m => m.ListOfService.Services))
-        </td>
-        
-    </tr>
-</table>
+            <td width="150px">
+                <a href="https://www.google.com/maps/place/@address" target="_blank">@address</a>
+            </td>
+
+            <td width="250px">
+                <span><b>Types:</b></span>
+                @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type)) : "Unknowen")
+                <br />
+                <span><b>Insurances:</b></span>
+                @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)) : "Unknowen")
+                <br />
+                <span><b>Services:</b></span>
+                @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)) : "Unknowen")
+            </td>
+
+        </tr>
+    </table>
 }
-
 
 <style>
     TD {
-        text-align:center;
+        text-align: center;
     }
 
     /*table:nth-of-type(odd) {
@@ -138,7 +168,11 @@
     }*/
 
     table:nth-of-type(even) {
-        background-color: #808080;
+        background-color: #cfc4c4;
+    }
+
+    label {
+        padding-right: 15px;
     }
 </style>
 

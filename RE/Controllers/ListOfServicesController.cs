@@ -17,7 +17,7 @@ namespace RE.Controllers
         // GET: ListOfServices
         public ActionResult Index()
         {
-            return View(db.ListOfServices.ToList());
+            return View(db.ListOfServices.OrderBy(m => m.Name).ToList());
         }
 
         // GET: ListOfServices/Details/5
@@ -46,12 +46,19 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Hide")] ListOfService listOfService)
+        public ActionResult Create([Bind(Include = "ID,Name")] ListOfService listOfService)
         {
             if (ModelState.IsValid)
             {
-                db.ListOfServices.Add(listOfService);
-                db.SaveChanges();
+                foreach (var type in listOfService.Name.Split(','))
+                {
+                    bool FoundType = db.ListOfServices.Where(m => m.Name.Contains(listOfService.Name)).Count() > 0;
+                    if (!FoundType)
+                    {
+                        db.ListOfServices.Add(listOfService);
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToAction("Index");
             }
 

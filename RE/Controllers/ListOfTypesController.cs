@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,7 +18,7 @@ namespace RE.Controllers
         // GET: ListOfTypes
         public ActionResult Index()
         {
-            return View(db.ListOfTypes.ToList());
+            return View(db.ListOfTypes.OrderBy(m => m.Type).ToList());
         }
 
         // GET: ListOfTypes/Details/5
@@ -46,12 +47,21 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Type,Hide")] ListOfType listOfType)
+        public ActionResult Create([Bind(Include = "ID,Type")] ListOfType listOfType)
         {
             if (ModelState.IsValid)
             {
-                db.ListOfTypes.Add(listOfType);
-                db.SaveChanges();
+                foreach (var type in listOfType.Type.Split(','))
+                {
+                    bool FoundType = db.ListOfTypes.Where(m => m.Type.Contains(listOfType.Type)).Count() > 0;
+                    if (!FoundType)
+                    {
+                        db.ListOfTypes.Add(new ListOfType() {Type = type });
+                        db.SaveChanges();
+                    }
+                }
+
+                
                 return RedirectToAction("Index");
             }
 

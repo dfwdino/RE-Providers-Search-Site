@@ -243,6 +243,7 @@
     <Content Include="Views\ListOfTypes\Details.cshtml" />
     <Content Include="Views\ListOfTypes\Edit.cshtml" />
     <Content Include="Views\ListOfTypes\Index.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

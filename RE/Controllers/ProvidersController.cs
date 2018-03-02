@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using RE;
@@ -17,7 +18,7 @@ namespace RE.Controllers
         // GET: Providers
         public ActionResult Index()
         {
-            var providers = db.Providers.Include(p => p.State);
+            var providers = db.Providers.Include(p => p.State).Where(m => m.Hide == false).OrderBy(m => m.Name);
             return View(providers.ToList());
         }
 
@@ -40,9 +41,9 @@ namespace RE.Controllers
         public ActionResult Create()
         {
             ViewBag.StateID = new SelectList(db.States, "ID", "Name");
-            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).ToList();
-            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).ToList();
+            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
             ViewBag.DiscountCashPay = new List<SelectListItem> {
                                 new SelectListItem { Text = "--- Select ---", Value = "" },
                                 new SelectListItem { Text = "Unknown", Value = "" },
@@ -67,19 +68,21 @@ namespace RE.Controllers
                 Provider tempprovider = new Provider();
                 tempprovider.Services = new List<Service>();
                 tempprovider.Insurances = new List<Insurance>();
+
+                Regex rgx = new Regex(@"\W");
                 
 
-                tempprovider.Name = provider.Name;
-                tempprovider.Phone = provider.Phone;
+                tempprovider.Name = provider.Name.Trim();
+                tempprovider.Phone = rgx.Replace(provider.Phone,"");
 
                 tempprovider.SlidingScale = provider.SlidingScale;
                 tempprovider.DiscountCashPay = provider.DiscountCashPay;
                 tempprovider.StateID = provider.StateID;
-                tempprovider.Street = provider.Street;
+                tempprovider.Street = provider.Street.Trim();
                 tempprovider.Zip = provider.Zip;
-                tempprovider.Website = provider.Website;
-                tempprovider.City = provider.City;
-                tempprovider.Email = provider.Email;
+                tempprovider.Website = provider.Website.Trim();
+                tempprovider.City = provider.City.Trim();
+                tempprovider.Email = provider.Email.Trim();
                 tempprovider.CreatedDate = DateTime.Now;
                 
                 foreach (var service in provider.Services)
@@ -135,6 +138,16 @@ namespace RE.Controllers
             }
 
             ViewBag.StateID = new SelectList(db.States, "ID", "Name", provider.StateID);
+            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Insurances).ToList();
+            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
+            ViewBag.DiscountCashPay = new List<SelectListItem> {
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
+                                new SelectListItem { Text = "Unknown", Value = "" },
+                                new SelectListItem { Text = "Yes", Value = true.ToString() },
+                                new SelectListItem { Text = "No", Value = false.ToString() }};
+
+            ViewBag.SlidingScale = ViewBag.DiscountCashPay;
             return View(provider);
         }
 
@@ -193,7 +206,9 @@ namespace RE.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Provider provider = db.Providers.Find(id);
-            db.Providers.Remove(provider);
+            //db.Providers.Remove(provider);
+            provider.Hide = true;
+            provider.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
