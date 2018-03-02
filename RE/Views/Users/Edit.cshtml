@@ -11,22 +11,23 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>User</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+<div class="form-horizontal">
+    <h4>User</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.HiddenFor(model => model.LoginName)
-
-        @Html.HiddenFor(model => model.Password)
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    @Html.Label("Login Name:")
+    @Html.EditorFor(model => model.LoginName)
+    <div style="margin-top:10px"></div>
+    @Html.LabelFor(model => model.Password):
+    @Html.EditorFor(model => model.Password)
+    <div style="margin-top:10px"></div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
+</div>
 }
 
 <div>

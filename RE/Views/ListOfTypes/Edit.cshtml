@@ -1,17 +1,17 @@
 ﻿@model RE.ListOfType
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit " + Model.Type;
 }
 
-<h2>Edit</h2>
+<h2>Edit @Model.Type</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ListOfType</h4>
+        <h4></h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)

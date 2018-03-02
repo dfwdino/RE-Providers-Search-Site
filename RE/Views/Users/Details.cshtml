@@ -10,6 +10,11 @@
     <h4>User</h4>
     <hr />
     <dl class="dl-horizontal">
+        @Html.Label("Login Name:")
+        @Html.DisplayFor(model => model.LoginName)
+        <div style="margin-top:10px"></div>
+        @Html.LabelFor(model => model.Disable):
+        @Model.Disable
     </dl>
 </div>
 <p>

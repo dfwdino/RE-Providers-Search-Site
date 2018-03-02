@@ -11,15 +11,19 @@
 </p>
 <table class="table">
     <tr>
+        <th>User Name</th>
+        <th>Disable</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>@item.LoginName</td>
+        <td>@item.Disable</td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
         </td>
     </tr>
 }
