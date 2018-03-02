@@ -123,8 +123,8 @@
         address = $"{provider.Street},{(provider.State != null ? provider.State.Name : "Unknowen")},{provider.Zip}";
     }
 
-    <table style="margin-top:10px" align="center">
-        <tr>
+    <table style="margin-top:10px;" height="auto" align="center">
+        <tr style="height:140px">
             <td>
                 <img src="~/Content/Images/Providers/FB_IMG_1448153373161.jpg" style="width:75px;height:75px;" /><br />
                 <span><b>Updated:</b></span> @(provider.ModifiedDate.HasValue ? provider.ModifiedDate?.ToShortDateString() : provider.CreatedDate.ToShortDateString() )
@@ -136,7 +136,7 @@
                         <a href='@provider.Website' target="_blank">Website</a>
                     </div>}
                 @if (@provider.Email != null)
-                {<br /><div style="margin-bottom:-21px;border-top:1px solid"><a href="mailto:@provider.Email">@provider.Email</a></div>}
+                {<br /><div style="margin-bottom:-21px;border-top:1px solid"><a href="mailto:@provider.Email">Email</a></div>}
             </td>
 
             <td width="150px">
@@ -144,14 +144,20 @@
             </td>
 
             <td width="250px">
-                <span><b>Types:</b></span>
-                @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type)) : "Unknowen")
+                <div style="margin-bottom:-21px;">
+                    <b>Types:</b>
+                    @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type)) : "Unknowen")
+                </div>
                 <br />
-                <span><b>Insurances:</b></span>
-                @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)) : "Unknowen")
+                <div style="margin-bottom:-21px;border-top:1px solid">
+                    <b>Insurances:</b>
+                    @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)) : "Unknowen")
+                </div>
                 <br />
-                <span><b>Services:</b></span>
-                @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)) : "Unknowen")
+                <div style="margin-bottom:-21px;border-top:1px solid">
+                    <b>Services:</b>
+                    @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)) : "Unknowen")
+                </div>
             </td>
 
         </tr>
