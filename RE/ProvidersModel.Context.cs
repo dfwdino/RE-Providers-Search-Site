@@ -34,5 +34,7 @@ namespace RE
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<State> States { get; set; }
+        public virtual DbSet<ListOfGender> ListOfGenders { get; set; }
+        public virtual DbSet<ListOfNationality> ListOfNationalities { get; set; }
     }
 }

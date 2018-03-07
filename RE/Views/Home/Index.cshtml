@@ -123,46 +123,66 @@
         address = $"{provider.Street},{(provider.State != null ? provider.State.Name : "Unknowen")},{provider.Zip}";
     }
 
-    <table style="margin-top:10px;" height="auto" align="center">
+    <table style="margin-top:10px;" align="center" border="1">
         <tr style="height:140px">
-            <td>
-                <img src="~/Content/Images/Providers/FB_IMG_1448153373161.jpg" style="width:75px;height:75px;" /><br />
-                <span><b>Updated:</b></span> @(provider.ModifiedDate.HasValue ? provider.ModifiedDate?.ToShortDateString() : provider.CreatedDate.ToShortDateString() )
-            </td>
             <td width="100px">
-                <div style="margin-bottom:-21px">@provider.Name</div>
+                <div style="margin-bottom:-21px"><a data-toggle="modal" data-target="#myModal" onclick="editProduct(@provider.ID)">@provider.Name</a></div>
                 @if (@provider.Website != null)
-                {<br /><div style="margin-bottom:-21px;border-top:1px solid">
-                        <a href='@provider.Website' target="_blank">Website</a>
-                    </div>}
+    {<br /> <hr size="5" width="80%" color="black">
+            <a href='@provider.Website' target="_blank">Website</a>
+}
                 @if (@provider.Email != null)
-                {<br /><div style="margin-bottom:-21px;border-top:1px solid"><a href="mailto:@provider.Email">Email</a></div>}
+    {<hr size="5" width="80%" color="black"><a href="mailto:@provider.Email">Email</a>}
+                <br />
+                @if (provider.ListOfGender != null)
+    {@provider.ListOfGender.Gender}
+                @if (provider.ListOfNationality != null)
+    {@provider.ListOfNationality.Nationality}
+
+
             </td>
 
             <td width="150px">
                 <a href="https://www.google.com/maps/place/@address" target="_blank">@address</a>
             </td>
-
-            <td width="250px">
-                <div style="margin-bottom:-21px;">
-                    <b>Types:</b>
-                    @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type)) : "Unknowen")
-                </div>
-                <br />
-                <div style="margin-bottom:-21px;border-top:1px solid">
-                    <b>Insurances:</b>
-                    @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)) : "Unknowen")
-                </div>
-                <br />
-                <div style="margin-bottom:-21px;border-top:1px solid">
-                    <b>Services:</b>
-                    @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)) : "Unknowen")
-                </div>
+            <td>
+                <b>Types:</b>
+                @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type)) : "Unknowen")
+                <hr size="5" width="80%" color="black">
+                <b>Insurances:</b>
+                @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)) : "Unknowen")
+                <hr size="5" width="80%" color="black">
+                <b>Services:</b>
+                @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)) : "Unknowen")
             </td>
-
         </tr>
     </table>
+
 }
+
+<!-- Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Provider Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalWrapper">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 <style>
     TD {
@@ -180,9 +200,32 @@
     label {
         padding-right: 15px;
     }
+
+    hr {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border: 0;
+        border-top: 2px solid black;
+    }
 </style>
 
 <script>
+
+    $(function () {
+        $('.editModal').modal().show();
+    });
+
+    function editProduct(providerID) {
+        $.ajax({
+            url: '@Url.Action("ProviderDetails", "Home")/' + providerID, // The method name + paramater
+            success: function (data) {
+                $('#myModal').modal('show')
+                $('#modalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+                //console.log("data is " + data)
+            }
+        });
+    }
+
 
     $("#advancedsearclink").click(function () {
         $("#advancedform").toggle();

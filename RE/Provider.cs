@@ -39,6 +39,9 @@ namespace RE
         public string Notes { get; set; }
         public string IMGLocation { get; set; }
         public string Title { get; set; }
+        public Nullable<int> GenderID { get; set; }
+        public Nullable<int> NationalityID { get; set; }
+        public bool REVerified { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Insurance> Insurances { get; set; }
@@ -47,5 +50,7 @@ namespace RE
         public virtual ICollection<Service> Services { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Type> Types { get; set; }
+        public virtual ListOfGender ListOfGender { get; set; }
+        public virtual ListOfNationality ListOfNationality { get; set; }
     }
 }

@@ -77,5 +77,10 @@
     <Build Include="Security\RoleMemberships.sql" />
     <Build Include="Security\RE.sql" />
     <Build Include="Security\Provider.sql" />
+    <Build Include="RE\Tables\ListOfNationalities.sql" />
+    <Build Include="RE\Tables\ListOfGender.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SqlSchemaCompare1.scmp" />
   </ItemGroup>
 </Project>

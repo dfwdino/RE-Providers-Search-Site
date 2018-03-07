@@ -35,6 +35,9 @@
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="IMGLocation" Type="nvarchar" MaxLength="255" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="GenderID" Type="int" />
+          <Property Name="NationalityID" Type="int" />
+          <Property Name="REVerified" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Services">
           <Key>
@@ -54,6 +57,15 @@
           <Property Name="ProviderID" Type="int" Nullable="false" />
           <Property Name="Hide" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ListOfGender">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Hide" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="25" Nullable="false" />
+        </EntityType>
         <EntityType Name="ListOfInsuranceCompanys">
           <Key>
             <PropertyRef Name="ID" />
@@ -61,6 +73,15 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Hide" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListOfNationalities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Hide" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Nationality" Type="nvarchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="ListOfServices">
           <Key>
@@ -119,6 +140,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Providers_ListOfGender">
+          <End Role="ListOfGender" Type="Self.ListOfGender" Multiplicity="0..1" />
+          <End Role="Providers" Type="Self.Providers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfGender">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Providers">
+              <PropertyRef Name="GenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Providers_ListOfNationalities">
+          <End Role="ListOfNationalities" Type="Self.ListOfNationalities" Multiplicity="0..1" />
+          <End Role="Providers" Type="Self.Providers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfNationalities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Providers">
+              <PropertyRef Name="NationalityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Providers_States">
           <End Role="States" Type="Self.States" Multiplicity="0..1" />
           <End Role="Providers" Type="Self.Providers" Multiplicity="*" />
@@ -155,18 +200,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Services_Services">
-          <End Role="Services" Type="Self.Services" Multiplicity="1" />
-          <End Role="Services1" Type="Self.Services" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Services1">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Types_ListOfTypes">
           <End Role="ListOfTypes" Type="Self.ListOfTypes" Multiplicity="1" />
           <End Role="Types" Type="Self.Types" Multiplicity="*" />
@@ -196,7 +229,9 @@
           <EntitySet Name="Providers" EntityType="Self.Providers" Schema="Provider" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="Provider" store:Type="Tables" />
           <EntitySet Name="Types" EntityType="Self.Types" Schema="Provider" store:Type="Tables" />
+          <EntitySet Name="ListOfGender" EntityType="Self.ListOfGender" Schema="RE" store:Type="Tables" />
           <EntitySet Name="ListOfInsuranceCompanys" EntityType="Self.ListOfInsuranceCompanys" Schema="RE" store:Type="Tables" />
+          <EntitySet Name="ListOfNationalities" EntityType="Self.ListOfNationalities" Schema="RE" store:Type="Tables" />
           <EntitySet Name="ListOfServices" EntityType="Self.ListOfServices" Schema="RE" store:Type="Tables" />
           <EntitySet Name="ListOfTypes" EntityType="Self.ListOfTypes" Schema="RE" store:Type="Tables" />
           <EntitySet Name="States" EntityType="Self.States" Schema="RE" store:Type="Tables" />
@@ -209,6 +244,14 @@
             <End Role="Providers" EntitySet="Providers" />
             <End Role="Insurances" EntitySet="Insurances" />
           </AssociationSet>
+          <AssociationSet Name="FK_Providers_ListOfGender" Association="Self.FK_Providers_ListOfGender">
+            <End Role="ListOfGender" EntitySet="ListOfGender" />
+            <End Role="Providers" EntitySet="Providers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Providers_ListOfNationalities" Association="Self.FK_Providers_ListOfNationalities">
+            <End Role="ListOfNationalities" EntitySet="ListOfNationalities" />
+            <End Role="Providers" EntitySet="Providers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Providers_States" Association="Self.FK_Providers_States">
             <End Role="States" EntitySet="States" />
             <End Role="Providers" EntitySet="Providers" />
@@ -220,10 +263,6 @@
           <AssociationSet Name="FK_Services_Providers" Association="Self.FK_Services_Providers">
             <End Role="Providers" EntitySet="Providers" />
             <End Role="Services" EntitySet="Services" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Services_Services" Association="Self.FK_Services_Services">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Services1" EntitySet="Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Types_ListOfTypes" Association="Self.FK_Types_ListOfTypes">
             <End Role="ListOfTypes" EntitySet="ListOfTypes" />
@@ -275,6 +314,16 @@
           <AssociationSet Name="FK_Types_Providers" Association="REModel.FK_Types_Providers">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Type" EntitySet="Types" />
+          </AssociationSet>
+          <EntitySet Name="ListOfGenders" EntityType="REModel.ListOfGender" />
+          <AssociationSet Name="FK_Providers_ListOfGender" Association="REModel.FK_Providers_ListOfGender">
+            <End Role="ListOfGender" EntitySet="ListOfGenders" />
+            <End Role="Provider" EntitySet="Providers" />
+          </AssociationSet>
+          <EntitySet Name="ListOfNationalities" EntityType="REModel.ListOfNationality" />
+          <AssociationSet Name="FK_Providers_ListOfNationalities" Association="REModel.FK_Providers_ListOfNationalities">
+            <End Role="ListOfNationality" EntitySet="ListOfNationalities" />
+            <End Role="Provider" EntitySet="Providers" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Insurance">
@@ -407,6 +456,11 @@
           <NavigationProperty Name="Services" Relationship="REModel.FK_Services_Providers" FromRole="Provider" ToRole="Service" />
           <NavigationProperty Name="Types" Relationship="REModel.FK_Types_Providers" FromRole="Provider" ToRole="Type" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GenderID" Type="Int32" />
+          <Property Name="NationalityID" Type="Int32" />
+          <NavigationProperty Name="ListOfGender" Relationship="REModel.FK_Providers_ListOfGender" FromRole="Provider" ToRole="ListOfGender" />
+          <NavigationProperty Name="ListOfNationality" Relationship="REModel.FK_Providers_ListOfNationalities" FromRole="Provider" ToRole="ListOfNationality" />
+          <Property Name="REVerified" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -462,6 +516,50 @@
             </Principal>
             <Dependent Role="Type">
               <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ListOfGender">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Providers" Relationship="REModel.FK_Providers_ListOfGender" FromRole="ListOfGender" ToRole="Provider" />
+        </EntityType>
+        <Association Name="FK_Providers_ListOfGender">
+          <End Type="REModel.ListOfGender" Role="ListOfGender" Multiplicity="0..1" />
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfGender">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="GenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ListOfNationality">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Nationality" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Providers" Relationship="REModel.FK_Providers_ListOfNationalities" FromRole="ListOfNationality" ToRole="Provider" />
+        </EntityType>
+        <Association Name="FK_Providers_ListOfNationalities">
+          <End Type="REModel.ListOfNationality" Role="ListOfNationality" Multiplicity="0..1" />
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ListOfNationality">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="NationalityID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -541,6 +639,9 @@
           <EntitySetMapping Name="Providers">
             <EntityTypeMapping TypeName="REModel.Provider">
               <MappingFragment StoreEntitySet="Providers">
+                <ScalarProperty Name="REVerified" ColumnName="REVerified" />
+                <ScalarProperty Name="NationalityID" ColumnName="NationalityID" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="IMGLocation" ColumnName="IMGLocation" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
@@ -566,6 +667,26 @@
               <MappingFragment StoreEntitySet="States">
                 <ScalarProperty Name="Abbrev" ColumnName="Abbrev" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListOfGenders">
+            <EntityTypeMapping TypeName="REModel.ListOfGender">
+              <MappingFragment StoreEntitySet="ListOfGender">
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListOfNationalities">
+            <EntityTypeMapping TypeName="REModel.ListOfNationality">
+              <MappingFragment StoreEntitySet="ListOfNationalities">
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

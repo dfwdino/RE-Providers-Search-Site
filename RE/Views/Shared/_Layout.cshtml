@@ -21,64 +21,89 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("RE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys == null){ 
-                        @Html.ActionLink("Login", "Index", "Login", null, new { @class = "navbar-brand" })
+                @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys == null)
+        {
+            @Html.ActionLink("Login", "Index", "Login", null, new { @class = "navbar-brand" })
 }
             </div>
-            @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys == true)
+            @if (HttpContext.Current.Request.Cookies["RE"]?.HasKeys != null)
     {
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Insurance<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Add", "Create", "ListOfInsuranceCompanies", null, null)</li>
-                            <li>@Html.ActionLink("List", "Index", "ListOfInsuranceCompanies", null, null)</li>
-                        </ul>
-                    </li>
-                </ul>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Genders<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "ListOfGenders", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "ListOfGenders", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
 
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Providers<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Add", "Create", "Providers", null, null)</li>
-                            <li>@Html.ActionLink("List", "Index", "Providers", null, null)</li>
-                        </ul>
-                    </li>
-                </ul>
 
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Services<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Add", "Create", "ListOfServices", null, null)</li>
-                            <li>@Html.ActionLink("List", "Index", "ListOfServices", null, null)</li>
-                        </ul>
-                    </li>
-                </ul>
 
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Types<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Add", "Create", "ListOfTypes", null, null)</li>
-                            <li>@Html.ActionLink("List", "Index", "ListOfTypes", null, null)</li>
-                        </ul>
-                    </li>
-                </ul>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Insurance<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "ListOfInsuranceCompanies", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "ListOfInsuranceCompanies", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
 
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">User<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Add", "Create", "Users", null, null)</li>
-                            <li>@Html.ActionLink("List", "Index", "Users", null, null)</li>
-                        </ul>
-                    </li>
-                </ul>
 
-            </div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Nationality<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "ListOfNationalities", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "ListOfNationalities", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Providers<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "Providers", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "Providers", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Services<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "ListOfServices", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "ListOfServices", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Types<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "ListOfTypes", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "ListOfTypes", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">User<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Add", "Create", "Users", null, null)</li>
+                        <li>@Html.ActionLink("List", "Index", "Users", null, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
 }
         </div>
     </div>

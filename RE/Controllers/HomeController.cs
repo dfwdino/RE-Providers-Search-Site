@@ -115,7 +115,12 @@ namespace RE.Controllers
             TempData["SearchProvider"] = searchproviders;
             //return RedirectToAction("Search", "Home", searchproviders.ToList());
             return View(new List<Models.ProviderCreateModel>());
-            
+
+        }
+
+        public ActionResult ProviderDetails(int id){
+
+            return View(db.Providers.Where(m => m.ID == id).Include(m=>m.Insurances).Include(m => m.Services).Single());
         }
 
     }

@@ -99,6 +99,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Providers\20141012101824.jpg" />
+    <Content Include="Content\Images\Providers\d0a9d38b-6a38-4d45-ac49-3e5dcf0062c6.jpg" />
+    <Content Include="Content\Images\Providers\eb289b3a-4f9e-4eb0-8747-69df551a05e7.jpg" />
     <Content Include="Content\Images\Providers\FB_IMG_1448153373161.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -139,7 +142,9 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ListOfGendersController.cs" />
     <Compile Include="Controllers\ListOfInsuranceCompaniesController.cs" />
+    <Compile Include="Controllers\ListOfNationalitiesController.cs" />
     <Compile Include="Controllers\ListOfServicesController.cs" />
     <Compile Include="Controllers\ListOfTypesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -149,10 +154,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Access.cs" />
+    <Compile Include="Infrastructure\YesNo.cs" />
     <Compile Include="Insurance.cs">
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ListOfGender.cs">
+      <DependentUpon>ProvidersModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ListOfInsuranceCompany.cs">
+      <DependentUpon>ProvidersModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ListOfNationality.cs">
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ListOfService.cs">
@@ -244,6 +256,17 @@
     <Content Include="Views\ListOfTypes\Edit.cshtml" />
     <Content Include="Views\ListOfTypes\Index.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\ProviderDetails.cshtml" />
+    <Content Include="Views\ListOfNationalities\Create.cshtml" />
+    <Content Include="Views\ListOfNationalities\Delete.cshtml" />
+    <Content Include="Views\ListOfNationalities\Details.cshtml" />
+    <Content Include="Views\ListOfNationalities\Edit.cshtml" />
+    <Content Include="Views\ListOfNationalities\Index.cshtml" />
+    <Content Include="Views\ListOfGenders\Create.cshtml" />
+    <Content Include="Views\ListOfGenders\Delete.cshtml" />
+    <Content Include="Views\ListOfGenders\Details.cshtml" />
+    <Content Include="Views\ListOfGenders\Edit.cshtml" />
+    <Content Include="Views\ListOfGenders\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

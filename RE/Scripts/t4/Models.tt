@@ -131,7 +131,7 @@ public static List<DatabaseTable> GetTables()
 	using (SqlConnection sqlConnection = new SqlConnection(connectionString))
 	{
 		//SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'", sqlConnection);
-		SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' and TABLE_Name = 'Services'", sqlConnection);
+		SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' and TABLE_Name = 'ListOfNationalities'", sqlConnection);
 		sqlConnection.Open();
 
 		var reader = command.ExecuteReader();

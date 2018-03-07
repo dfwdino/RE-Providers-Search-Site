@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,7 @@ namespace RE.Models
         public string Street { get; set; }
         public string City { get; set; }
         public Nullable<int> StateID { get; set; }
+        
         public Nullable<double> Zip { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -30,15 +32,22 @@ namespace RE.Models
         public string Notes { get; set; }
         public string IMGLocation { get; set; }
 
-        
-        public virtual IList<Models.InsurancesCreateModel> Insurances { get; set; }
-        public virtual State State { get; set; }
-        
-        public virtual IList<Models.ServicesCreateModel> Services { get; set; }
-        
-        public virtual IList<Models.TypesCreateModel> Types { get; set; }
+        public Nullable<int> GenderID { get; set; }
+        public Nullable<int> NationalityID { get; set; }
 
-        public IList<Provider> Providers { get; set; }
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase UploadedLocation { get; set; }
+
+        public bool REVerified { get; set; }
+
+        public virtual IList<Models.InsurancesCreateModel> Insurances { get; set; }
+        public virtual IList<Models.ServicesCreateModel> Services { get; set; }
+        public virtual IList<Models.TypesCreateModel> Types { get; set; }
+        public virtual State State { get; set; }
+        public virtual ListOfGender Gender { get; set; }
+        public virtual ListOfNationality Nationality { get; set; }
+
+        //public IList<Provider> Providers { get; set; }
 
     }
 }

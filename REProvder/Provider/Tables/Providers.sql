@@ -16,7 +16,14 @@
     [Notes]           NVARCHAR (MAX) NULL,
     [IMGLocation]     NVARCHAR (255) NULL,
     [Title]           NVARCHAR (50)  NULL,
+    [GenderID]        INT            NULL,
+    [NationalityID]   INT            NULL,
+    [REVerified]      BIT            CONSTRAINT [DF_Providers_REVerified] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_Provider] PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_Providers_ListOfGender] FOREIGN KEY ([GenderID]) REFERENCES [RE].[ListOfGender] ([ID]),
+    CONSTRAINT [FK_Providers_ListOfNationalities] FOREIGN KEY ([NationalityID]) REFERENCES [RE].[ListOfNationalities] ([ID]),
     CONSTRAINT [FK_Providers_States] FOREIGN KEY ([StateID]) REFERENCES [RE].[States] ([ID])
 );
+
+
 

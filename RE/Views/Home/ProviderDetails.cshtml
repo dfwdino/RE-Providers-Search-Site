@@ -1,0 +1,117 @@
+﻿@model RE.Provider
+
+@{
+    Layout = "";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dd>
+            @if (Model.IMGLocation != null)
+        {
+            <img style="width:75px; height:auto" src="~/Content/Images/Providers/@Model.IMGLocation" />}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            <div>@Model.Title @Model.Name</div>
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Address")
+        </dt>
+
+        <dd>
+            @Model.Street <br />
+            @Model.City @Model.State.Name @Model.Zip
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Zip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Zip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SlidingScale)
+        </dt>
+
+        <dd>
+            @(Model.SlidingScale != null ? Model.SlidingScale.Value.ToString() : "Unknowen")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountCashPay)
+        </dt>
+
+        <dd>
+            @(Model.DiscountCashPay != null ? Model.DiscountCashPay.Value.ToString() : "Unknowen")
+        </dd>
+
+        <dt>
+            <span>@Html.DisplayName("Last Updated")</span>
+        </dt>
+
+        <dd>
+            @(Model.ModifiedDate == null ? Model.CreatedDate : Model.ModifiedDate)
+        </dd>
+        <dt>
+            <span>@Html.DisplayName("RE Verified")</span>
+        </dt>
+
+        <dd>
+            @(Model.REVerified == true ? "Yes" : "No")
+        </dd>
+        <dt>
+            @Html.DisplayName("Other Info")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+    </dl>
+</div>
+
+<style>
+    dd {
+        margin-bottom: 10px;
+    }
+</style>

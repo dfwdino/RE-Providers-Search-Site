@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -11,6 +12,7 @@ using RE;
 
 namespace RE.Controllers
 {
+
     public class ProvidersController : Controller
     {
         private REEntities db = new REEntities();
@@ -41,6 +43,8 @@ namespace RE.Controllers
         public ActionResult Create()
         {
             ViewBag.StateID = new SelectList(db.States, "ID", "Name");
+            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender");
+            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality");
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
@@ -73,18 +77,29 @@ namespace RE.Controllers
                 
 
                 tempprovider.Name = provider.Name.Trim();
-                tempprovider.Phone = rgx.Replace(provider.Phone,"");
+                tempprovider.Phone = provider.Phone == null ? "" : rgx.Replace(provider.Phone,"");
 
                 tempprovider.SlidingScale = provider.SlidingScale;
                 tempprovider.DiscountCashPay = provider.DiscountCashPay;
                 tempprovider.StateID = provider.StateID;
                 tempprovider.Street = provider.Street.Trim();
                 tempprovider.Zip = provider.Zip;
-                tempprovider.Website = provider.Website.Trim();
+                tempprovider.Website = provider.Website?.Trim();
                 tempprovider.City = provider.City.Trim();
-                tempprovider.Email = provider.Email.Trim();
+                tempprovider.Email = provider.Email?.Trim();
                 tempprovider.CreatedDate = DateTime.Now;
-                
+                tempprovider.GenderID = provider.GenderID;
+                tempprovider.NationalityID = provider.NationalityID;
+
+                if (provider.UploadedLocation?.ContentLength > 0)
+                {
+
+                    string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(provider.UploadedLocation.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Content/Images/Providers"), _FileName);
+                    tempprovider.IMGLocation = _FileName;
+                    provider.UploadedLocation.SaveAs(_path);
+                }
+
                 foreach (var service in provider.Services)
                 {
                     foreach (var selectedservice in service.SelectedService)
@@ -141,6 +156,8 @@ namespace RE.Controllers
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Insurances).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
+            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender");
+            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality");
             ViewBag.DiscountCashPay = new List<SelectListItem> {
                                 new SelectListItem { Text = "--- Select ---", Value = "" },
                                 new SelectListItem { Text = "Unknown", Value = "" },
@@ -164,6 +181,22 @@ namespace RE.Controllers
                 return HttpNotFound();
             }
             ViewBag.StateID = new SelectList(db.States, "ID", "Name", provider.StateID);
+            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender",provider.GenderID);
+            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality", provider.NationalityID);
+
+
+            ViewBag.DiscountCashPay = new SelectList(new List<SelectListItem> {
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
+                                new SelectListItem { Text = "Unknown", Value = null },
+                                new SelectListItem { Text = "Yes", Value = true.ToString() },
+                                new SelectListItem { Text = "No", Value = false.ToString() }}, "Value", "Text", provider.DiscountCashPay);
+
+            ViewBag.SlidingScale = new SelectList(new List<SelectListItem> {
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
+                                new SelectListItem { Text = "Unknown", Value = null },
+                                new SelectListItem { Text = "Yes", Value = true.ToString() },
+                                new SelectListItem { Text = "No", Value = false.ToString() }}, "Value", "Text", provider.SlidingScale);
+
             return View(provider);
         }
 
@@ -182,6 +215,20 @@ namespace RE.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.StateID = new SelectList(db.States, "ID", "Name", provider.StateID);
+            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender", provider.GenderID);
+            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality", provider.NationalityID);
+
+            ViewBag.DiscountCashPay = new SelectList(new List<SelectListItem> {
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
+                                new SelectListItem { Text = "Unknown", Value = null },
+                                new SelectListItem { Text = "Yes", Value = true.ToString() },
+                                new SelectListItem { Text = "No", Value = false.ToString() }}, "Value", "Text", provider.DiscountCashPay);
+
+            ViewBag.SlidingScale = new SelectList(new List<SelectListItem> {
+                                new SelectListItem { Text = "--- Select ---", Value = "" },
+                                new SelectListItem { Text = "Unknown", Value = null },
+                                new SelectListItem { Text = "Yes", Value = true.ToString() },
+                                new SelectListItem { Text = "No", Value = false.ToString() }}, "Value", "Text", provider.SlidingScale);
             return View(provider);
         }
 
