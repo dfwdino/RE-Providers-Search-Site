@@ -21,7 +21,9 @@ namespace RE.Controllers
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
-            
+            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender");
+            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality");
+
             return View(new List<Models.ProviderCreateModel>());
         }
         
@@ -66,6 +68,16 @@ namespace RE.Controllers
             if (providersearch.DiscountCashPay == true)
             {
                 providers = providers.Where(m => m.DiscountCashPay == providersearch.DiscountCashPay);
+            }
+
+            if (!providersearch.GenderID.Equals(0))
+            {
+                providers = providers.Where(m => m.GenderID == providersearch.GenderID);
+            }
+
+            if (!providersearch.NationalityID.Equals(0))
+            {
+                providers = providers.Where(m => m.NationalityID == providersearch.NationalityID);
             }
 
             List<Provider> searchproviders = providers.ToList();

@@ -31,6 +31,13 @@
                 <div class="col-md-1">@Html.Label("Zip: ")</div>
                 <div class="col-lg-1">@Html.TextBox("Zip")</div>
             </div>
+            <div class="row">
+                <div class="col-md-1">@Html.Label("Gender: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("GenderID", null, htmlAttributes: new { @class = "form-control" })</div>
+                
+                <div class="col-md-1">@Html.Label("Nationality: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("Nationality", null, htmlAttributes: new { @class = "form-control" })</div>
+            </div>
             <hr />
             <ul class="nav nav-tabs nav-justified">
                 <li class="nav-item">
