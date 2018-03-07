@@ -42,9 +42,18 @@ namespace RE.Controllers
         // GET: Providers/Create
         public ActionResult Create()
         {
-            ViewBag.StateID = new SelectList(db.States, "ID", "Name");
-            ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender");
-            ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality");
+            List<State> states = db.States.ToList();
+            List<ListOfGender> listOfGenders = db.ListOfGenders.ToList();
+            List<ListOfNationality> listOfNationalities = db.ListOfNationalities.ToList();
+
+            states.Add(new State() { ID = 0, Name = " ---Select---" });
+            listOfGenders.Add(new ListOfGender() { ID = 0, Gender = " ---Select---" });
+            listOfNationalities.Add(new ListOfNationality() { ID = 0, Nationality = " ---Select---" });
+
+            ViewBag.StateID = new SelectList(states.OrderBy(m => m.Name), "ID", "Name");
+            ViewBag.GenderID = new SelectList(listOfGenders.Where(m => m.Hide == false).OrderBy(m => m.Gender), "ID", "Gender");
+            ViewBag.NationalityID = new SelectList(listOfNationalities.Where(m => m.Hide == false).OrderBy(m => m.Nationality), "ID", "Nationality");
+
             ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
             ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
