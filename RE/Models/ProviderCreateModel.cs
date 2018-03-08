@@ -15,6 +15,8 @@ namespace RE.Models
             Types = new List<Models.TypesCreateModel>();
         }
 
+        public int ID { get; set; }
+
         public string Name { get; set; }
         public string Street { get; set; }
         public string City { get; set; }

@@ -189,10 +189,13 @@ namespace RE.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.StateID = new SelectList(db.States, "ID", "Name", provider.StateID);
             ViewBag.GenderID = new SelectList(db.ListOfGenders.Where(m => m.Hide == false), "ID", "Gender",provider.GenderID);
             ViewBag.NationalityID = new SelectList(db.ListOfNationalities.Where(m => m.Hide == false), "ID", "Nationality", provider.NationalityID);
-
+            ViewBag.ListOfInsuranceCompanys = db.ListOfInsuranceCompanys.Where(mm => mm.Hide == false).ToList();
+            ViewBag.ListOfServices = db.ListOfServices.Where(m => m.Hide == false).OrderBy(m => m.Name).ToList();
+            ViewBag.ListOfTypes = db.ListOfTypes.Where(m => m.Hide == false).OrderBy(m => m.Type).ToList();
 
             ViewBag.DiscountCashPay = new SelectList(new List<SelectListItem> {
                                 new SelectListItem { Text = "--- Select ---", Value = "" },
@@ -206,7 +209,63 @@ namespace RE.Controllers
                                 new SelectListItem { Text = "Yes", Value = true.ToString() },
                                 new SelectListItem { Text = "No", Value = false.ToString() }}, "Value", "Text", provider.SlidingScale);
 
-            return View(provider);
+            Models.ProviderCreateModel tempprovider = new Models.ProviderCreateModel();
+
+            Regex rgx = new Regex(@"\W");
+
+
+            tempprovider.Name = provider.Name.Trim();
+            tempprovider.Phone = provider.Phone == null ? "" : rgx.Replace(provider.Phone, "");
+
+            tempprovider.SlidingScale = provider.SlidingScale;
+            tempprovider.DiscountCashPay = provider.DiscountCashPay;
+            tempprovider.StateID = provider.StateID;
+            tempprovider.Street = provider.Street.Trim();
+            tempprovider.Zip = provider.Zip;
+            tempprovider.Website = provider.Website?.Trim();
+            tempprovider.City = provider.City.Trim();
+            tempprovider.Email = provider.Email?.Trim();
+            tempprovider.CreatedDate = DateTime.Now;
+            tempprovider.GenderID = provider.GenderID;
+            tempprovider.NationalityID = provider.NationalityID;
+            tempprovider.IMGLocation = provider.IMGLocation;
+
+
+            foreach (var item in provider.Services.Where(mm => mm.Hide == false))
+            {
+               Models.ServicesCreateModel scm = new Models.ServicesCreateModel();
+
+                scm.ServiceID = item.ServiceID;
+                scm.ProviderID = item.ProviderID;
+
+               tempprovider.Services.Add(scm);
+
+            }
+            
+            foreach (var item in provider.Insurances.Where(mm => mm.Hide == false))
+            {
+                Models.InsurancesCreateModel scm = new Models.InsurancesCreateModel();
+
+                scm.InsureanceID = item.InsureanceID;
+                scm.ProviderID = item.ProviderID;
+
+                tempprovider.Insurances.Add(scm);
+
+            }
+            
+            foreach (var item in provider.Types.Where(mm => mm.Hide == false))
+            {
+                Models.TypesCreateModel scm = new Models.TypesCreateModel();
+
+                scm.TypeID = item.TypeID;
+                scm.ProviderID = item.ProviderID;
+
+                tempprovider.Types.Add(scm);
+
+            }
+
+
+            return View(tempprovider);
         }
 
         // POST: Providers/Edit/5
@@ -214,11 +273,88 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Provider provider)
+        public ActionResult Edit(Models.ProviderCreateModel provider)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(provider).State = EntityState.Modified;
+                //db.Entry(provider).State = EntityState.Modified;
+
+                Provider tempprovider = db.Providers.Where(asdf => asdf.ID == provider.ID).Single();
+                
+                Regex rgx = new Regex(@"\W");
+
+
+                tempprovider.Name = provider.Name.Trim();
+                tempprovider.Phone = provider.Phone == null ? "" : rgx.Replace(provider.Phone, "");
+
+                tempprovider.SlidingScale = provider.SlidingScale;
+                tempprovider.DiscountCashPay = provider.DiscountCashPay;
+                tempprovider.StateID = provider.StateID;
+                tempprovider.Street = provider.Street.Trim();
+                tempprovider.Zip = provider.Zip;
+                tempprovider.Website = provider.Website?.Trim();
+                tempprovider.City = provider.City.Trim();
+                tempprovider.Email = provider.Email?.Trim();
+                tempprovider.CreatedDate = DateTime.Now;
+                tempprovider.GenderID = provider.GenderID;
+                tempprovider.NationalityID = provider.NationalityID;
+
+                db.Insurances.Where(mm => mm.ProviderID == provider.ID && mm.Hide == false).ToList().ForEach(mm => mm.Hide = true);
+                db.Services.Where(mm => mm.ProviderID == provider.ID && mm.Hide == false).ToList().ForEach(mm => mm.Hide = true);
+                db.Types.Where(mm => mm.ProviderID == provider.ID && mm.Hide == false).ToList().ForEach(mm => mm.Hide = true);
+
+                if (provider.UploadedLocation?.ContentLength > 0)
+                {
+
+                    string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(provider.UploadedLocation.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Content/Images/Providers"), _FileName);
+                    tempprovider.IMGLocation = _FileName;
+                    provider.UploadedLocation.SaveAs(_path);
+                }
+
+                foreach (var service in provider.Services)
+                {
+                    foreach (var selectedservice in service.SelectedService)
+                    {
+                        Service newservice = new Service();
+
+                        newservice.ServiceID = selectedservice;
+
+                        tempprovider.Services.Add(newservice);
+
+                    }
+                }
+
+                foreach (var insurances in provider.Insurances)
+                {
+                    foreach (var selectedinsurances in insurances.SelectedInsurance)
+                    {
+                        Insurance newinsurances = new Insurance();
+
+                        newinsurances.InsureanceID = selectedinsurances;
+                        //newinsurances.ProviderID = tempprovider.ID;
+
+
+                        tempprovider.Insurances.Add(newinsurances);
+
+                    }
+                }
+
+                foreach (var type in provider.Types)
+                {
+                    foreach (var selectedtype in type.SelectedType)
+                    {
+                        Type newtype = new Type();
+
+                        newtype.TypeID = selectedtype;
+                        //newtype.ProviderID = tempprovider.ID;
+
+
+                        tempprovider.Types.Add(newtype);
+
+                    }
+                }
+
                 provider.ModifiedDate = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");

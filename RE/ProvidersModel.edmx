@@ -46,7 +46,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProviderID" Type="int" Nullable="false" />
           <Property Name="ServiceID" Type="int" Nullable="false" />
-          <Property Name="Hide" Type="int" Nullable="false" />
+          <Property Name="Hide" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Types">
           <Key>
@@ -344,7 +344,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
           <Property Name="ServiceID" Type="Int32" Nullable="false" />
-          <Property Name="Hide" Type="Int32" Nullable="false" />
+          <Property Name="Hide" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ListOfService" Relationship="REModel.FK_ProviderServices_Services" FromRole="Service" ToRole="ListOfService" />
           <NavigationProperty Name="Provider" Relationship="REModel.FK_Services_Providers" FromRole="Service" ToRole="Provider" />
         </EntityType>

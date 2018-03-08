@@ -22,8 +22,6 @@ namespace RE.Models
         [DisplayName("Service ID")]
         public int ServiceID { get; set; }
 
-        [Required]
-        [DisplayName("Hide")]
         public int Hide { get; set; }
 
         public List<int> SelectedService { get; set; }

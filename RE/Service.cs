@@ -17,7 +17,7 @@ namespace RE
         public int ID { get; set; }
         public int ProviderID { get; set; }
         public int ServiceID { get; set; }
-        public int Hide { get; set; }
+        public bool Hide { get; set; }
     
         public virtual ListOfService ListOfService { get; set; }
         public virtual Provider Provider { get; set; }
