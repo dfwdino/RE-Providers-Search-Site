@@ -19,7 +19,7 @@
         <td width="150px">@provider.Street <br/> @provider.State.Name @provider.Zip</td>
         
         <td width="250px">
-            @Html.Label(" Types:", new { @class = "Header" }) @String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))
+            @Html.Label("Provider Types:", new { @class = "Header" }) @String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))
             <br />
             @Html.Label("Insurances:", new { @class = "Header" }) @String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name))
             <br />

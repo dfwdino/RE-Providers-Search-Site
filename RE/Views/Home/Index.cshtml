@@ -155,7 +155,7 @@
                 <br />
             </td>
             <td>
-                <b>Types:</b>
+                <b>Provider Types:</b>
                 @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))) : "Unknowen")
                 <hr size="5" width="80%" color="black">
                 <b>Insurances:</b>
