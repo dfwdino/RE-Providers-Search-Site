@@ -149,5 +149,19 @@ namespace RE.Controllers
             return View(db.Providers.Where(m => m.ID == id).Include(m=>m.Insurances).Include(m => m.Services).Single());
         }
 
+        public ActionResult MoreDetails(int id)
+        {
+            Provider provider = db.Providers.Where(m => m.ID == id).Include(m => m.Insurances).Include(m => m.Services).Single();
+
+            Models.MoreDetailModalModel moreDetailModalModel = new Models.MoreDetailModalModel();
+
+            moreDetailModalModel.Insurances = String.Join(",", provider.Insurances.Where(mm => mm.Hide == false).Select(mm => mm.ListOfInsuranceCompany.Name));
+            moreDetailModalModel.Services = String.Join(",", provider.Services.Where(mm => mm.Hide == false).Select(mm => mm.ListOfService.Name));
+            moreDetailModalModel.ProviderTypes = String.Join(",", provider.Types.Where(mm => mm.Hide == false).Select(mm => mm.ListOfType.Type));
+
+
+            return View(moreDetailModalModel);
+        }
+
     }
 }

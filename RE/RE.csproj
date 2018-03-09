@@ -150,6 +150,9 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Extensions\DateTime.cs" />
+    <Compile Include="Extensions\DefinitionList.cs" />
+    <Compile Include="Extensions\String.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,6 +177,7 @@
       <DependentUpon>ProvidersModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InsurancesCreateModel.cs" />
+    <Compile Include="Models\MoreDetailModalModel.cs" />
     <Compile Include="Models\ProviderCreateModel.cs" />
     <Compile Include="Models\ServicesCreateModel.cs" />
     <Compile Include="Models\TypesCreateModel.cs" />
@@ -267,6 +271,7 @@
     <Content Include="Views\ListOfGenders\Details.cshtml" />
     <Content Include="Views\ListOfGenders\Edit.cshtml" />
     <Content Include="Views\ListOfGenders\Index.cshtml" />
+    <Content Include="Views\Home\MoreDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

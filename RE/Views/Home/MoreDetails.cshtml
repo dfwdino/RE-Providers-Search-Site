@@ -1,0 +1,16 @@
+﻿@model RE.Models.MoreDetailModalModel
+@using System.Globalization;
+
+@{
+    Layout = "";
+}
+
+<b>Provider Types:</b>
+@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@Model.ProviderTypes)
+<hr size="5" width="80%" color="black">
+<b>Insurances:</b>
+@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@Model.Insurances)
+<hr size="5" width="80%" color="black">
+<b>Services:</b>
+@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(@Model.Services)
+

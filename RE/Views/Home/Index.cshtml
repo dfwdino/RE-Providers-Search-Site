@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Index";
     string address = "";
+    string servcies1 = "";
 }
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,106 +17,106 @@
     <div id="advancedform">
 
         @using (Html.BeginForm())
-    {
-        <div class="row">
-            <div class="col-md-1">@Html.Label("Name: ")</div>
-            <div class="col-lg-1">@Html.TextBox("Name")</div>
-
-        </div>
-        <div style="padding-top:10px"></div>
-        <div class="row">
-            <div class="col-sm-1">@Html.Label("City: ")</div>
-            <div class="col-lg-2">@Html.TextBox("City")</div>
-            <div class="col-md-1">@Html.Label("State: ")</div>
-            <div class="col-lg-2">@Html.DropDownList("StateID", null, htmlAttributes: new { @class = "form-control" })</div>
-            <div class="col-md-1">@Html.Label("Zip: ")</div>
-            <div class="col-lg-1">@Html.TextBox("Zip")</div>
-        </div>
-        <div style="padding-top:10px"></div>
-        <div class="row">
-            <div class="col-md-1">@Html.Label("Gender: ")</div>
-            <div class="col-lg-2">@Html.DropDownList("GenderID", null, htmlAttributes: new { @class = "form-control" })</div>
-
-            <div class="col-md-1">@Html.Label("Nationality: ")</div>
-            <div class="col-lg-2">@Html.DropDownList("NationalityID", null, htmlAttributes: new { @class = "form-control" })</div>
-        </div>
-        <hr />
-        <ul class="nav nav-tabs nav-justified">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Services</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Insurance</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Types</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#panel4" role="tab">Payment Discount</a>
-            </li>
-        </ul>
-
-        <div class="tab-content card">
-            <div class="tab-pane fade" id="panel1" role="tabpanel">
-                <br>
-                <p>
-                    @foreach (var item in ViewBag.ListOfServices)
-                {
-                    <label for="Services[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Services[0].SelectedService"
-                               id="Services[@item.ID][0]" value="@item.ID" />
-                        @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
-                    </label>
-            }
-                </p>
-            </div>
-
-            <div class="tab-pane fade" id="panel2" role="tabpanel">
-                <br>
-                <p>
-                    @foreach (var item in ViewBag.ListOfInsuranceCompanys)
-                {
-                    <label for="Insurances[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Insurances[0].SelectedInsurance"
-                               id="Insurances[@item.ID][0]" value="@item.ID" />
-                        @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
-                    </label>
-            }
-                </p>
+        {
+            <div class="row">
+                <div class="col-md-1">@Html.Label("Name: ")</div>
+                <div class="col-lg-1">@Html.TextBox("Name")</div>
 
             </div>
+            <div style="padding-top:10px"></div>
+            <div class="row">
+                <div class="col-sm-1">@Html.Label("City: ")</div>
+                <div class="col-lg-2">@Html.TextBox("City")</div>
+                <div class="col-md-1">@Html.Label("State: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("StateID", null, htmlAttributes: new { @class = "form-control" })</div>
+                <div class="col-md-1">@Html.Label("Zip: ")</div>
+                <div class="col-lg-1">@Html.TextBox("Zip")</div>
+            </div>
+            <div style="padding-top:10px"></div>
+            <div class="row">
+                <div class="col-md-1">@Html.Label("Gender: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("GenderID", null, htmlAttributes: new { @class = "form-control" })</div>
 
-            <div class="tab-pane fade" id="panel3" role="tabpanel">
-                <br>
-                <p>
-                    @foreach (var item in ViewBag.ListOfTypes)
-                {
-                    <label for="Types[@item.ID][0]">
-                        <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
-                               id="Types[@item.ID][0]" value="@item.ID" />
-                        @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Type)
-                    </label>
-            }
-                </p>
+                <div class="col-md-1">@Html.Label("Nationality: ")</div>
+                <div class="col-lg-2">@Html.DropDownList("NationalityID", null, htmlAttributes: new { @class = "form-control" })</div>
+            </div>
+            <hr />
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Insurance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Types</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panel4" role="tab">Payment Discount</a>
+                </li>
+            </ul>
+
+            <div class="tab-content card">
+                <div class="tab-pane fade" id="panel1" role="tabpanel">
+                    <br>
+                    <p>
+                        @foreach (var item in ViewBag.ListOfServices)
+                        {
+                            <label for="Services[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Services[0].SelectedService"
+                                       id="Services[@item.ID][0]" value="@item.ID" />
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
+                            </label>
+                        }
+                    </p>
+                </div>
+
+                <div class="tab-pane fade" id="panel2" role="tabpanel">
+                    <br>
+                    <p>
+                        @foreach (var item in ViewBag.ListOfInsuranceCompanys)
+                        {
+                            <label for="Insurances[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Insurances[0].SelectedInsurance"
+                                       id="Insurances[@item.ID][0]" value="@item.ID" />
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Name)
+                            </label>
+                        }
+                    </p>
+
+                </div>
+
+                <div class="tab-pane fade" id="panel3" role="tabpanel">
+                    <br>
+                    <p>
+                        @foreach (var item in ViewBag.ListOfTypes)
+                        {
+                            <label for="Types[@item.ID][0]">
+                                <input style="margin-left:5px" type="checkbox" name="Types[0].SelectedType"
+                                       id="Types[@item.ID][0]" value="@item.ID" />
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Type)
+                            </label>
+                        }
+                    </p>
+                </div>
+
+                <div class="tab-pane fade" id="panel4" role="tabpanel">
+                    <br>
+                    <p>
+                        <label for="SlidingScale">@Html.CheckBox("SlidingScale") Sliding Scale</label>
+                        <label for="DiscountCashPay">@Html.CheckBox("DiscountCashPay") Discount Cash Pay</label>
+                    </p>
+                </div>
+
             </div>
 
-            <div class="tab-pane fade" id="panel4" role="tabpanel">
-                <br>
-                <p>
-                    <label for="SlidingScale">@Html.CheckBox("SlidingScale") Sliding Scale</label>
-                    <label for="DiscountCashPay">@Html.CheckBox("DiscountCashPay") Discount Cash Pay</label>
-                </p>
+            <div style="padding-top:40px"></div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
             </div>
-
-        </div>
-
-        <div style="padding-top:40px"></div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <input type="submit" value="Search" class="btn btn-default" />
-            </div>
-        </div>
-}
+        }
     </div>
 
 </div>
@@ -137,32 +138,49 @@
                 <div style="margin-bottom:-21px"><a data-toggle="modal" data-target="#myModal" onclick="editProduct(@provider.ID)">@provider.Name</a></div>
 
                 @if (provider.ListOfGender != null)
-    {<br /> <hr size="5" width="80%" color="black">@provider.ListOfGender.Gender}
+                {<br /> <hr size="5" width="80%" color="black">@provider.ListOfGender.Gender}
                 @if (provider.ListOfNationality != null)
-    { @provider.ListOfNationality.Nationality}
+                {@provider.ListOfNationality.Nationality}
 
 
             </td>
 
-            <td width="150px">
+            <td width="200px">
                 <a href="https://www.google.com/maps/place/@address" target="_blank">@address</a>
                 @if (@provider.Website != null)
-    {<br /> <hr size="5" width="80%" color="black">
-            <a href='@provider.Website' target="_blank">Website</a>
-}
+                {<br /> <hr size="5" width="80%" color="black">
+                    <a href='@provider.Website' target="_blank">Website</a>
+                }
                 @if (@provider.Email != null)
-    {<hr size="5" width="80%" color="black"><a href="mailto:@provider.Email">Email</a>}
+                {<hr size="5" width="80%" color="black"><a href="mailto:@provider.Email">Email</a>}
                 <br />
             </td>
-            <td>
+
+            <td width="350px">
                 <b>Provider Types:</b>
                 @(@provider.Types.Select(m => m.ListOfType.Type).Count() > 0 ? @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Types.Select(m => m.ListOfType.Type))) : "Unknowen")
                 <hr size="5" width="80%" color="black">
                 <b>Insurances:</b>
-                @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name))) : "Unknowen")
+                @(@provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name).Count() > 0 ? String.Join(", ", @provider.Insurances.Select(m => m.ListOfInsuranceCompany.Name)).ToTitleCase() : "Unknowen")
                 <hr size="5" width="80%" color="black">
                 <b>Services:</b>
-                @(@provider.Services.Select(m => m.ListOfService.Name).Count() > 0 ? @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name))) : "Unknowen")
+                @if (provider.Services.Select(m => m.ListOfService.Name).Count() > 0)
+                {
+                    if (CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name))).Count() > 25)
+                    {
+                        <span>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name))).Substring(0, 24)...
+                                <a data-toggle="modal" data-target="#MoreDetails" onclick="MoreDetails(@provider.ID)">More</a></span>
+                    }
+                    else
+                    {
+                        <span>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(String.Join(", ", @provider.Services.Select(m => m.ListOfService.Name)))</span>
+                    }
+                }
+                else
+                {
+                    <span>Unknown</span>
+                }
+
             </td>
         </tr>
     </table>
@@ -170,26 +188,48 @@
 }
 
 <!-- Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Provider Detail</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="modalWrapper">
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provider Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalWrapper">
 
-                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModalMoreDetails">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalWrapperMoreDetails">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -210,7 +250,7 @@
         padding-right: 15px;
     }
 
-    .modal-dialog{
+    .modal-dialog {
         left: 0px;
     }
 
@@ -234,6 +274,17 @@
             success: function (data) {
                 $('#myModal').modal('show')
                 $('#modalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+                //console.log("data is " + data)
+            }
+        });
+    }
+
+    function MoreDetails(providerID) {
+        $.ajax({
+            url: '@Url.Action("MoreDetails", "Home")/' + providerID, // The method name + paramater
+            success: function (data) {
+                $('#myModalMoreDetails').modal('show')
+                $('#modalWrapperMoreDetails').html(data); // This should be an empty div where you can inject your new html (the partial view)
                 //console.log("data is " + data)
             }
         });
