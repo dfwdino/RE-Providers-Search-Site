@@ -26,6 +26,7 @@ namespace RE.Controllers
                 HttpCookie siteCookie = new HttpCookie("RE");
 
                 siteCookie.Values.Add("HasAccess", "true");
+                siteCookie.Values.Add("AccessType", Models.UserTypes.Admin.ToString());
                 siteCookie.Values.Add("ID", user.ID.ToString());
                 siteCookie.Expires = DateTime.Now.Date.AddDays(1);
                 this.ControllerContext.HttpContext.Response.Cookies.Add(siteCookie);

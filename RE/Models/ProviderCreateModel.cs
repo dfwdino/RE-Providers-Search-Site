@@ -36,6 +36,7 @@ namespace RE.Models
 
         public Nullable<int> GenderID { get; set; }
         public Nullable<int> NationalityID { get; set; }
+        public Nullable<int> OwnerID { get; set; }
 
         [DataType(DataType.Upload)]
         public HttpPostedFileBase UploadedLocation { get; set; }
@@ -48,6 +49,7 @@ namespace RE.Models
         public virtual State State { get; set; }
         public virtual ListOfGender Gender { get; set; }
         public virtual ListOfNationality Nationality { get; set; }
+        public virtual RE.User Owner { get; set; }
 
         //public IList<Provider> Providers { get; set; }
 

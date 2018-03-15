@@ -38,6 +38,7 @@
           <Property Name="GenderID" Type="int" />
           <Property Name="NationalityID" Type="int" />
           <Property Name="REVerified" Type="bit" Nullable="false" />
+          <Property Name="OwnerID" Type="int" />
         </EntityType>
         <EntityType Name="Services">
           <Key>
@@ -99,6 +100,19 @@
           <Property Name="Type" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Hide" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="20" />
+          <Property Name="ControllerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ActionName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ActionParameters" Type="nvarchar(max)" />
+          <Property Name="AbsoluteUri" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="States">
           <Key>
             <PropertyRef Name="ID" />
@@ -115,6 +129,15 @@
           <Property Name="LoginName" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="Disable" Type="bit" Nullable="false" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Disable" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_Insurances_Insurances1">
           <End Role="ListOfInsuranceCompanys" Type="Self.ListOfInsuranceCompanys" Multiplicity="1" />
@@ -176,6 +199,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Providers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Providers" Type="Self.Providers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Providers">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProviderServices_Services">
           <End Role="ListOfServices" Type="Self.ListOfServices" Multiplicity="1" />
           <End Role="Services" Type="Self.Services" Multiplicity="*" />
@@ -224,6 +259,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_UserTypes">
+          <End Role="UserTypes" Type="Self.UserTypes" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="REModelStoreContainer">
           <EntitySet Name="Insurances" EntityType="Self.Insurances" Schema="Provider" store:Type="Tables" />
           <EntitySet Name="Providers" EntityType="Self.Providers" Schema="Provider" store:Type="Tables" />
@@ -234,8 +281,10 @@
           <EntitySet Name="ListOfNationalities" EntityType="Self.ListOfNationalities" Schema="RE" store:Type="Tables" />
           <EntitySet Name="ListOfServices" EntityType="Self.ListOfServices" Schema="RE" store:Type="Tables" />
           <EntitySet Name="ListOfTypes" EntityType="Self.ListOfTypes" Schema="RE" store:Type="Tables" />
+          <EntitySet Name="Logging" EntityType="Self.Logging" Schema="RE" store:Type="Tables" />
           <EntitySet Name="States" EntityType="Self.States" Schema="RE" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="RE" store:Type="Tables" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="RE" store:Type="Tables" />
           <AssociationSet Name="FK_Insurances_Insurances1" Association="Self.FK_Insurances_Insurances1">
             <End Role="ListOfInsuranceCompanys" EntitySet="ListOfInsuranceCompanys" />
             <End Role="Insurances" EntitySet="Insurances" />
@@ -256,6 +305,10 @@
             <End Role="States" EntitySet="States" />
             <End Role="Providers" EntitySet="Providers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Providers_Users" Association="Self.FK_Providers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Providers" EntitySet="Providers" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProviderServices_Services" Association="Self.FK_ProviderServices_Services">
             <End Role="ListOfServices" EntitySet="ListOfServices" />
             <End Role="Services" EntitySet="Services" />
@@ -271,6 +324,10 @@
           <AssociationSet Name="FK_Types_Providers" Association="Self.FK_Types_Providers">
             <End Role="Providers" EntitySet="Providers" />
             <End Role="Types" EntitySet="Types" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UserTypes" Association="Self.FK_Users_UserTypes">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -323,6 +380,16 @@
           <EntitySet Name="ListOfNationalities" EntityType="REModel.ListOfNationality" />
           <AssociationSet Name="FK_Providers_ListOfNationalities" Association="REModel.FK_Providers_ListOfNationalities">
             <End Role="ListOfNationality" EntitySet="ListOfNationalities" />
+            <End Role="Provider" EntitySet="Providers" />
+          </AssociationSet>
+          <EntitySet Name="Loggings" EntityType="REModel.Logging" />
+          <EntitySet Name="UserTypes" EntityType="REModel.UserType" />
+          <AssociationSet Name="FK_Users_UserTypes" Association="REModel.FK_Users_UserTypes">
+            <End Role="UserType" EntitySet="UserTypes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Providers_Users" Association="REModel.FK_Providers_Users">
+            <End Role="User" EntitySet="Users" />
             <End Role="Provider" EntitySet="Providers" />
           </AssociationSet>
         </EntityContainer>
@@ -394,6 +461,9 @@
           <Property Name="LoginName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Disable" Type="Boolean" Nullable="false" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserType" Relationship="REModel.FK_Users_UserTypes" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="Providers" Relationship="REModel.FK_Providers_Users" FromRole="User" ToRole="Provider" />
         </EntityType>
         <Association Name="FK_Insurances_Insurances1">
           <End Type="REModel.ListOfInsuranceCompany" Role="ListOfInsuranceCompany" Multiplicity="1" />
@@ -461,6 +531,8 @@
           <NavigationProperty Name="ListOfGender" Relationship="REModel.FK_Providers_ListOfGender" FromRole="Provider" ToRole="ListOfGender" />
           <NavigationProperty Name="ListOfNationality" Relationship="REModel.FK_Providers_ListOfNationalities" FromRole="Provider" ToRole="ListOfNationality" />
           <Property Name="REVerified" Type="Boolean" Nullable="false" />
+          <Property Name="OwnerID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="REModel.FK_Providers_Users" FromRole="Provider" ToRole="User" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -563,6 +635,52 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActionParameters" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AbsoluteUri" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Disable" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="REModel.FK_Users_UserTypes" FromRole="UserType" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Users_UserTypes">
+          <End Type="REModel.UserType" Role="UserType" Multiplicity="1" />
+          <End Type="REModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Providers_Users">
+          <End Type="REModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="REModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -629,6 +747,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="REModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="Disable" ColumnName="Disable" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
@@ -639,6 +758,7 @@
           <EntitySetMapping Name="Providers">
             <EntityTypeMapping TypeName="REModel.Provider">
               <MappingFragment StoreEntitySet="Providers">
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
                 <ScalarProperty Name="REVerified" ColumnName="REVerified" />
                 <ScalarProperty Name="NationalityID" ColumnName="NationalityID" />
                 <ScalarProperty Name="GenderID" ColumnName="GenderID" />
@@ -687,6 +807,29 @@
                 <ScalarProperty Name="Nationality" ColumnName="Nationality" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loggings">
+            <EntityTypeMapping TypeName="REModel.Logging">
+              <MappingFragment StoreEntitySet="Logging">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="AbsoluteUri" ColumnName="AbsoluteUri" />
+                <ScalarProperty Name="ActionParameters" ColumnName="ActionParameters" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTypes">
+            <EntityTypeMapping TypeName="REModel.UserType">
+              <MappingFragment StoreEntitySet="UserTypes">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Disable" ColumnName="Disable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

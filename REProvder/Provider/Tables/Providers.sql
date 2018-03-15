@@ -19,11 +19,15 @@
     [GenderID]        INT            NULL,
     [NationalityID]   INT            NULL,
     [REVerified]      BIT            CONSTRAINT [DF_Providers_REVerified] DEFAULT ((0)) NOT NULL,
+    [OwnerID]         INT            NULL,
     CONSTRAINT [PK_Provider] PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [FK_Providers_ListOfGender] FOREIGN KEY ([GenderID]) REFERENCES [RE].[ListOfGender] ([ID]),
     CONSTRAINT [FK_Providers_ListOfNationalities] FOREIGN KEY ([NationalityID]) REFERENCES [RE].[ListOfNationalities] ([ID]),
-    CONSTRAINT [FK_Providers_States] FOREIGN KEY ([StateID]) REFERENCES [RE].[States] ([ID])
+    CONSTRAINT [FK_Providers_States] FOREIGN KEY ([StateID]) REFERENCES [RE].[States] ([ID]),
+    CONSTRAINT [FK_Providers_Users] FOREIGN KEY ([OwnerID]) REFERENCES [RE].[Users] ([ID])
 );
+
+
 
 
 

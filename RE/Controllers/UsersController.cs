@@ -17,7 +17,22 @@ namespace RE.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            List<Models.JSONUsersViewModel> users = new List<Models.JSONUsersViewModel>();
+
+            foreach (User tempuser in db.Users)
+            {
+                Models.JSONUsersViewModel jsonuser = new Models.JSONUsersViewModel();
+
+                jsonuser.Disable = tempuser.Disable;
+                jsonuser.ID = tempuser.ID;
+                jsonuser.LoginName = tempuser.LoginName;
+                jsonuser.UserTypeName = tempuser.UserType.Type;
+
+                users.Add(jsonuser);
+
+            }
+
+            return View(users);
         }
 
         // GET: Users/Details/5
@@ -38,6 +53,10 @@ namespace RE.Controllers
         // GET: Users/Create
         public ActionResult Create()
         {
+            List<UserType> listOfUserTypes = db.UserTypes.ToList();
+            listOfUserTypes.Add(new UserType() { ID = 3, Type = " ---Select---" });
+
+            ViewBag.UserTypeID = new SelectList(listOfUserTypes.OrderBy(m => m.Type), "ID", "Type");
             return View();
         }
 
@@ -46,14 +65,21 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LoginName,Password")] User user)
+        public ActionResult Create(User user)
         {
+         
+
             if (ModelState.IsValid)
             {
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            List<UserType> listOfUserTypes = db.UserTypes.ToList();
+            listOfUserTypes.Add(new UserType() { ID = 3, Type = " ---Select---" });
+
+            ViewBag.UserTypeID = new SelectList(listOfUserTypes.OrderBy(m => m.Type), "ID", "Type");
 
             return View(user);
         }
@@ -66,6 +92,11 @@ namespace RE.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             User user = db.Users.Find(id);
+            List<UserType> listOfUserTypes = db.UserTypes.ToList();
+            listOfUserTypes.Add(new UserType() { ID = 3, Type = " ---Select---" });
+
+            ViewBag.UserTypeID = new SelectList(listOfUserTypes.OrderBy(m => m.Type), "ID", "Type",user.UserTypeID);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -78,7 +109,7 @@ namespace RE.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LoginName,Password")] User user)
+        public ActionResult Edit(User user)
         {
             if (ModelState.IsValid)
             {

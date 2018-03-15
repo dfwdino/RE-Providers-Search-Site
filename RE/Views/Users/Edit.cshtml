@@ -19,8 +19,16 @@
     @Html.Label("Login Name:")
     @Html.EditorFor(model => model.LoginName)
     <div style="margin-top:10px"></div>
+    
     @Html.LabelFor(model => model.Password):
     @Html.EditorFor(model => model.Password)
+    <div style="margin-top:10px"></div>
+    
+    @Html.Label("User Type:")
+    @Html.DropDownList("UserTypeID")
+    
+    
+    
     <div style="margin-top:10px"></div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

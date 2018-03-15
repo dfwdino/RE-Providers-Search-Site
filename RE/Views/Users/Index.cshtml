@@ -1,7 +1,7 @@
-﻿@model IEnumerable<RE.User>
+﻿@model IEnumerable<RE.Models.JSONUsersViewModel>
 
 @{
-    ViewBag.Title = "Index";
+  ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
@@ -9,23 +9,94 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>User Name</th>
-        <th>Disable</th>
-        <th></th>
-    </tr>
+@*<table class="table">
+        <tr>
+            <th>User Name</th>
+            <th>Disable</th>
+            <th>User Type</th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>@item.LoginName</td>
-        <td>@item.Disable</td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>@item.LoginName</td>
+            <td>@item.Disable</td>
+            <td>@item.UserType.Type</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
-</table>
+    </table>*@
+
+<div class="container" ng-app="myModule" ng-controller="myController" data-ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+
+    <form>
+        <div class="form-group" style="display:none">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" placeholder="Search date" ng-model="searchDate">
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>
+                    <a href="#" ng-click="sortType = 'LoginName'; sortReverse = !sortReverse">
+                        Login Name
+                        <span ng-show="sortType == 'LoginName' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'LoginName' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </td>
+                <td>
+                    <a href="#" ng-click="sortType = 'Disable'; sortReverse = !sortReverse">
+                        Disable
+                        <span ng-show="sortType == 'Disable' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'Disable' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </td>
+                <td>
+                    <a href="#" ng-click="sortType = 'UserTypeName'; sortReverse = !sortReverse">
+                        User Type
+                        <span ng-show="sortType == 'UserTypeName' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'UserTypeName' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="g in Users | orderBy:sortType:sortReverse | filter:LoginName">
+                <td>{{ g.LoginName }}</td>
+                <td>{{ g.Disable }}</td>
+                <td>{{ g.UserTypeName }}</td>
+                <td>
+                    @{
+                        var Editurl = Url.Action("Edit", "Users", new { id = "{{id=g.ID}}" });
+                        Editurl = HttpUtility.UrlDecode(Editurl);
+
+                        var Deleteurl = Url.Action("Delete", "Delete", new { id = "{{id=g.ID}}" });
+                        Deleteurl = HttpUtility.UrlDecode(Deleteurl);
+        
+                    }
+                <a data-ng-href="@Editurl">Edit</a> | <a data-ng-href="@Deleteurl">Delete</a> |
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+
+<script src="~/Scripts/RE/JSON-Controller-Users.js"></script>

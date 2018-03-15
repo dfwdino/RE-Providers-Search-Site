@@ -79,6 +79,8 @@
     <Build Include="Security\Provider.sql" />
     <Build Include="RE\Tables\ListOfNationalities.sql" />
     <Build Include="RE\Tables\ListOfGender.sql" />
+    <Build Include="RE\Tables\UserTypes.sql" />
+    <Build Include="RE\Tables\Logging.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlSchemaCompare1.scmp" />

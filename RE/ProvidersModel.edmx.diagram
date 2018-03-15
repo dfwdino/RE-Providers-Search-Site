@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="REModel.ListOfInsuranceCompany" Width="1.5" PointX="5.125" PointY="0.625" />
         <EntityTypeShape EntityType="REModel.ListOfService" Width="1.5" PointX="5.25" PointY="9.875" />
         <EntityTypeShape EntityType="REModel.ListOfType" Width="1.5" PointX="7.5" PointY="9" />
-        <EntityTypeShape EntityType="REModel.User" Width="1.5" PointX="7.75" PointY="1.125" />
+        <EntityTypeShape EntityType="REModel.User" Width="1.5" PointX="9.5" PointY="8" />
         <AssociationConnector Association="REModel.FK_Insurances_Insurances1" />
         <AssociationConnector Association="REModel.FK_ProviderServices_Services" />
         <AssociationConnector Association="REModel.FK_Types_ListOfTypes" />
@@ -25,6 +25,10 @@
         <AssociationConnector Association="REModel.FK_Providers_ListOfGender" />
         <EntityTypeShape EntityType="REModel.ListOfNationality" Width="1.5" PointX="0.75" PointY="9.875" />
         <AssociationConnector Association="REModel.FK_Providers_ListOfNationalities" />
+        <EntityTypeShape EntityType="REModel.Logging" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="REModel.UserType" Width="1.5" PointX="9.5" PointY="10.5" />
+        <AssociationConnector Association="REModel.FK_Users_UserTypes" />
+        <AssociationConnector Association="REModel.FK_Providers_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
