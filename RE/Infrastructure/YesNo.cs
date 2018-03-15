@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace RE.Infrastructure
 {
@@ -10,7 +11,6 @@ namespace RE.Infrastructure
        public string Text { get; set; }
        public string Value { get; set; }
     }
-
 
     public class YesNoUnknowenList
     {
@@ -22,9 +22,6 @@ namespace RE.Infrastructure
                                                     new CustiomDropDown { Text = "No", Value = false.ToString()}
                                                  };
         }
-
-
     }
-
 
 }

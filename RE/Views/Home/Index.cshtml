@@ -137,10 +137,10 @@
             <td width="100px">
                 <div style="margin-bottom:-21px"><a data-toggle="modal" data-target="#myModal" onclick="editProduct(@provider.ID)">@provider.Name</a></div>
 
-                @if (provider.ListOfGender != null)
-                {<br /> <hr size="5" width="80%" color="black">@provider.ListOfGender.Gender}
                 @if (provider.ListOfNationality != null)
-                {@provider.ListOfNationality.Nationality}
+                {<br /> <hr size="5" width="80%" color="black">@provider.ListOfNationality.Nationality}
+                @if (provider.ListOfGender != null)
+                {@provider.ListOfGender.Gender}
 
 
             </td>
